@@ -1,3 +1,4 @@
+import Hero from "./_components/sections/Hero";
 import Header from "./_components/shared/Header";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
         }}
       />
       <Header />
+      <Hero/>
     </>
   );
 }
