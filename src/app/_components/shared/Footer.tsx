@@ -32,6 +32,7 @@ const Footer = () => {
           <h5 className="font-bold bg-primary inline text-background p-1 pe-20 rounded-[15%_40%/40%_15%]">Menu</h5>
           <ul className="text-sm space-y-1.5 mt-3">
             <li>Leaderboard</li>
+            <li>Gallery</li>
             <li>About us</li>
             <li>Contac us</li>
           </ul>

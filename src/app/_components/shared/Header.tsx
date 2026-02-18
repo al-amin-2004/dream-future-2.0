@@ -13,6 +13,7 @@ interface INavlist {
 }
 const Navlist: INavlist[] = [
   { link: "leaderboard", label: "Leaderboard" },
+  { link: "gallery", label: "Gallery" },
   { link: "about", label: "About us" },
   { link: "contact", label: "Contact us" },
 ];
@@ -26,8 +27,8 @@ const Header: FC = () => {
 
         <div className="flex items-center gap-2 md:gap-14">
           <ul
-            className={`absolute md:static h-0 md:h-auto w-full md:w-auto top-full left-0 overflow-hidden p-0 rounded-b-md bg-slate-300/30 md:bg-transparent md:flex items-center gap-3 transition-all duration-300 ${
-              navOpen && "h-[7.2rem] p-1"
+            className={`absolute md:static h-0 md:h-auto w-full md:w-auto top-full left-0 overflow-hidden p-0 rounded-b-md bg-slate-300/30 md:bg-transparent md:flex items-center gap-2 md:gap-3 transition-all duration-300 ${
+              navOpen && "h-36 p-1"
             }`}
           >
             {Navlist.map((list) => (
