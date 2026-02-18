@@ -1,6 +1,7 @@
 import FinotiveFunding from "./_components/sections/FinotiveFunding";
 import Hero from "./_components/sections/Hero";
 import Services from "./_components/sections/Services";
+import Footer from "./_components/shared/Footer";
 import Header from "./_components/shared/Header";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <Hero/>
       <FinotiveFunding />
       <Services/>
+      <Footer/>
     </>
   );
 }
