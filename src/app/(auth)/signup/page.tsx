@@ -43,7 +43,6 @@ const SignUp: React.FC = () => {
     setSignup({ ...signup, [e.target.name]: e.target.value });
   };
 
-  
   return (
     <RegistrationCard className="w-full md:max-w-md mt-20">
       {/* Header */}
@@ -180,7 +179,7 @@ const SignUp: React.FC = () => {
           disabled={!isChecked || isLoading}
           className="w-full rounded md:rounded-md"
         >
-          {isLoading ? "Creating Account..." : "Create account"}
+          {isLoading ? "Sending OTP..." : "Get OTP"}
         </Button>
       </form>
 
