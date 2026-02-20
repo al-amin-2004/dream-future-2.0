@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Input from "../../_components/ui/Input";
-import { Label } from "../../_components/ui/Label";
+import Label from "../../_components/ui/Label";
 import { Button } from "@/app/_components/ui/Button";
 import {
   RegistrationCard,
