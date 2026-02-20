@@ -20,7 +20,7 @@ export const generateUniqueUsername = async (
 
     username = `${base}@${randomNumber}`;
 
-    const existUser = await UserModel.find({ username });
+    const existUser = await UserModel.findOne({ username });
 
     if (!existUser) {
       exist = false;
