@@ -127,3 +127,17 @@
     @apply mx-auto px-4 2xl:p-0;
   }
 }
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: linear-gradient(transparent, var(--primary));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(transparent, #10c200);
+  cursor: grab;
+}
