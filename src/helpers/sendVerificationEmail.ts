@@ -12,7 +12,7 @@ export const sendVerificationEmail = async (email: string, code: string) => {
         <div style="font-family: sans-serif;">
           <h2>Your OTP Code</h2>
           <p style="font-size: 20px; font-weight: bold;">${code}</p>
-          <p>This code will expire in 1 minute.</p>
+          <p>This code will expire in 2 minute.</p>
         </div>
       `,
     });
