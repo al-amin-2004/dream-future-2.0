@@ -34,7 +34,7 @@ const userSchema = new Schema<IUserWithPassword>(
     password: { type: String, required: [true, "Please provide a password."] },
     number: { type: String, trim: true },
     isVerifiedNumber: { type: Boolean, default: false },
-    gender: { type: String, enum: gender, default: "other" },
+    gender: { type: String, enum: gender, default: "Male" },
     dob: Date,
     nationality: String,
     address: String,
