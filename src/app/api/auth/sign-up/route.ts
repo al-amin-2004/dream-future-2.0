@@ -1,11 +1,14 @@
 import { generateUniqueUsername } from "@/helpers/generateUsername";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import dbConnect from "@/lib/dbConnect";
 import ValidationModel from "@/models/OTPValidation";
 import UserModel from "@/models/User";
 import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) {
   try {
+    await dbConnect();
+
     const { firstName, lastName, email, password } = await request.json();
 
     const username = await generateUniqueUsername(firstName, lastName);
