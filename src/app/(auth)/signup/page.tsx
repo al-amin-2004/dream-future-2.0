@@ -1,10 +1,15 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Input from "../../_components/ui/Input";
-import { Label } from "../../_components/ui/Label";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { signUpSchema } from "@/schemas/signUpSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/app/_components/ui/Button";
+import Input from "../../_components/ui/Input";
+import Label from "../../_components/ui/Label";
 import {
   RegistrationCard,
   RegistrationCardDescription,
@@ -21,26 +26,33 @@ import {
   UserIcon,
 } from "lucide-react";
 
-interface SignUpData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
+type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUp: React.FC = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [signup, setSignup] = useState<SignUpData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
   });
 
-  const inputsHandle = (e: ChangeEvent<HTMLInputElement>) => {
-    setSignup({ ...signup, [e.target.name]: e.target.value });
+  const onSubmit = async (data: SignUpFormData) => {
+    setIsLoading(true);
+
+    try {
+      console.log(data);
+      router.push("/varification");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -58,31 +70,22 @@ const SignUp: React.FC = () => {
         </RegistrationCardDescription>
       </RegistrationCardHeader>
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* First and last Name Inputs */}
         <div className="flex gap-2">
           <div className="w-full space-y-2">
             <Label htmlFor="firstName">First name</Label>
-            <Input
-              type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="John"
-              value={signup.firstName}
-              onChange={inputsHandle}
-              required
-            />
+            <Input placeholder="John" {...register("firstName")} />
+            {errors.firstName && (
+              <p className="text-red-500 text-xs">{errors.firstName.message}</p>
+            )}
           </div>
           <div className="w-full space-y-2">
             <Label htmlFor="lastName">Last name</Label>
-            <Input
-              type="text"
-              id="lastName"
-              name="lastName"
-              placeholder="Doe"
-              value={signup.lastName}
-              onChange={inputsHandle}
-            />
+            <Input placeholder="Doe" {...register("lastName")} />
+            {errors.lastName && (
+              <p className="text-red-500 text-xs">{errors.lastName.message}</p>
+            )}
           </div>
         </div>
 
@@ -95,16 +98,14 @@ const SignUp: React.FC = () => {
               className="absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none text-gray-500"
             />
             <Input
-              type="email"
-              id="email"
-              name="email"
-              required
-              value={signup.email}
-              onChange={inputsHandle}
-              placeholder="name@example.com"
+              placeholder="example@gmail.com"
+              {...register("email")}
               className="pl-8 md:pl-9"
             />
           </div>
+          {errors.email && (
+            <p className="text-red-500 text-xs">{errors.email.message}</p>
+          )}
         </div>
 
         {/* Password Input */}
@@ -117,14 +118,9 @@ const SignUp: React.FC = () => {
             />
             <Input
               type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              value={signup.password}
-              onChange={inputsHandle}
               placeholder="Create a password"
-              className="pl-8 md:pl-9 pr-10"
-              required
-              minLength={6}
+              {...register("password")}
+              className="pl-8 md:pl-9"
             />
             <button
               type="button"
@@ -134,6 +130,9 @@ const SignUp: React.FC = () => {
               {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
             </button>
           </div>
+          {errors.password && (
+            <p className="text-red-500 text-xs">{errors.password.message}</p>
+          )}
         </div>
 
         {/* Terms Checkbox */}
