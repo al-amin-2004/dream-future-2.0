@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/app/_components/ui/Button";
 import Input from "../../_components/ui/Input";
 import Label from "../../_components/ui/Label";
+import { toast } from "sonner";
 import {
   RegistrationCard,
   RegistrationCardDescription,
@@ -42,12 +43,24 @@ const SignUp: React.FC = () => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = async (data: SignUpFormData) => {
+  const onSubmit = async (formData: SignUpFormData) => {
     setIsLoading(true);
 
     try {
-      console.log(data);
-      router.push("/varification");
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.info(data.message || "Something Worng!");
+      } else {
+        toast.success(data.message);
+        router.push("/varification");
+      }
     } catch (error) {
       console.log(error);
     } finally {
