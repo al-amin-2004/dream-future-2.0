@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Input from "../../_components/ui/Input";
 import Label from "../../_components/ui/Label";
@@ -30,7 +30,7 @@ interface SignUpErrors {
   password?: string;
 }
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errors, setErrors] = useState<SignUpErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -1,9 +1,11 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/app/_components/ui/Button";
 import { Loader2, ShieldCheck } from "lucide-react";
+import { emailMasking } from "@/helpers/MaskEmail";
+import { toast } from "sonner";
 import {
   RegistrationCard,
   RegistrationCardDescription,
@@ -17,49 +19,98 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { emailMasking } from "@/helpers/MaskEmail";
+import { formatTime } from "@/helpers/formatTime";
 
-const Varification: FC = () => {
+const VarificationPage = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const [otp, setOtp] = useState("");
-  const [seconds, setSeconds] = useState(120);
+  const [otp, setOtp] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState("");
-  const [attempts, setAttempts] = useState(0);
+  const [error, setError] = useState<string>("");
+  const [expiresAt, setExpiresAt] = useState<Date | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [seconds, setSeconds] = useState<number>(0);
 
+  const [attempts, setAttempts] = useState<number>(0);
+
+  const userId = searchParams.get("userid");
+
+  // get email and OTP
   useEffect(() => {
-    if (seconds === 0) return;
+    const getInfo = async () => {
+      try {
+        const res = await fetch("/api/auth/getValidationOtp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        });
 
-    const timer = setTimeout(() => {
-      setSeconds((prev) => prev - 1);
+        const data = await res.json();
+
+        if (!res.ok) {
+          toast.error(data.message);
+        }
+
+        setEmail(data.email);
+        setExpiresAt(data.expiresAt);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (userId) getInfo();
+  }, [userId]);
+
+  // date to second convert
+  useEffect(() => {
+    if (!expiresAt) return;
+
+    const interval = setInterval(() => {
+      const remaining = Math.floor(
+        (new Date(expiresAt).getTime() - new Date().getTime()) / 1000,
+      );
+
+      setSeconds(remaining > 0 ? remaining : 0);
     }, 1000);
 
-    return () => clearTimeout(timer);
-  }, [seconds]);
+    return () => clearInterval(interval);
+  }, [expiresAt]);
 
-  const handleVerify = () => {
-    if (otp.length !== 6) return;
-
+  // OTP Verifi here
+  const handleVerify = async () => {
     setIsLoading(true);
     setError("");
 
-    // simulate api
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const res = await fetch("/api/auth/verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, otp }),
+      });
 
-      if (otp !== "123456") {
-        setError("Invalid OTP. Please try again.");
-        setOtp("");
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message || "Something went wrong!");
         return;
       }
-      router.push("/profile");
-    }, 1200);
+
+      toast.success(data.message, {
+        duration: 1500,
+        onAutoClose: () => {
+          router.push("/profile");
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Server error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleResend = () => {
-    setSeconds(120);
-    setError("");
-    setOtp("");
+    // todo back here
   };
 
   const isBlocked = attempts >= 5;
@@ -78,7 +129,7 @@ const Varification: FC = () => {
         <RegistrationCardDescription>
           Enter the 6 digit code sent to <br />
           <span className="text-sm font-medium text-foreground">
-            {emailMasking("alaminmridha2004@gmail.com")}
+            {email && emailMasking(email)}
           </span>
         </RegistrationCardDescription>
       </RegistrationCardHeader>
@@ -128,7 +179,7 @@ const Varification: FC = () => {
           disabled={seconds > 0}
           className="text-sm text-muted-foreground hover:underline disabled:opacity-50"
         >
-          {seconds > 0 ? `Resend OTP in ${seconds}s` : "Resend OTP"}
+          {seconds > 0 ? `Resend OTP in ${formatTime(seconds)}s` : "Resend OTP"}
         </button>
       </div>
 
@@ -144,4 +195,4 @@ const Varification: FC = () => {
   );
 };
 
-export default Varification;
+export default VarificationPage;

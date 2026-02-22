@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import z from "zod";
@@ -29,11 +29,11 @@ import {
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -59,10 +59,10 @@ const SignUp: React.FC = () => {
         toast.info(data.message || "Something Worng!");
       } else {
         toast.success(data.message);
-        router.push("/varification");
+        router.push(`/verification?userid=${data.userId}`);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

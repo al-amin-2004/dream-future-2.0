@@ -20,6 +20,8 @@ export async function POST(request: Request) {
 
     const existingEmail = await UserModel.findOne({ email });
 
+    let userId;
+
     if (existingEmail) {
       if (existingEmail.isVerifiedEmail) {
         return Response.json(
@@ -29,6 +31,9 @@ export async function POST(request: Request) {
       } else {
         existingEmail.password = hashedPassword;
         await existingEmail.save();
+
+        userId = existingEmail._id;
+
         await ValidationModel.findOneAndUpdate(
           { userId: existingEmail._id },
           {
@@ -46,6 +51,8 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
       });
+
+      userId = createNewUser._id;
 
       await ValidationModel.create({
         userId: createNewUser._id,
@@ -65,7 +72,12 @@ export async function POST(request: Request) {
     }
 
     return Response.json(
-      { success: true, message: "Sending an OTP. Please verify your email." },
+      {
+        success: true,
+        userId,
+        email,
+        message: "Sending an OTP. Please verify your email.",
+      },
       { status: 201 },
     );
   } catch (error) {
