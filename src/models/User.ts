@@ -1,4 +1,4 @@
-import { gender, role } from "@/constants/user";
+import { country, gender, role } from "@/constants/user";
 import { IUserWithPassword } from "@/types";
 import mongoose, { Schema } from "mongoose";
 
@@ -34,11 +34,12 @@ const userSchema = new Schema<IUserWithPassword>(
     password: { type: String, required: [true, "Please provide a password."] },
     number: { type: String, trim: true },
     isVerifiedNumber: { type: Boolean, default: false },
-    gender: { type: String, enum: gender, default: "Male" },
-    dob: Date,
-    nationality: String,
-    address: String,
-    avatar: String,
+    gender: { type: String, enum: gender, default: "male" },
+    dob: { type: Date, default: "" },
+    nationality: { type: String, enum: country, default: "bangladesh" },
+    address: { type: String, default: "" },
+    avatar: { type: String, default: "" },
+    avatarId: { type: String, default: "" },
     role: { type: String, enum: role, default: "member" },
     identification: {
       birthId: { type: String, trim: true },

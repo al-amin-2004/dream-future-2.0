@@ -1,10 +1,5 @@
 import z from "zod";
-
-const nameValidation = z
-  .string()
-  .min(2, "Name must be atleast 2 character")
-  .max(20, "Name must be no more than 20 characters")
-  .regex(/^[a-zA-Z0-9_]+$/, "Name must not contain special character");
+import { nameValidation } from "./updateProfileScema";
 
 export const signUpSchema = z.object({
   firstName: nameValidation,

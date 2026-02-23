@@ -34,8 +34,6 @@ export async function GET() {
       );
     }
 
-    console.log(user);
-    
 
     return Response.json({ ok: true, user });
   } catch (error) {
