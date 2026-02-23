@@ -22,6 +22,7 @@ const UpdateProfile = () => {
   const { user, refreshUser } = useUser();
   const [profilePic, setProfilePic] = useState<File | string | null>(null);
   const [avatarId, setAvatarId] = useState<string>("");
+  const [profilePicChanged, setProfilePicChanged] = useState(false);
 
   type UpdateProfileFormData = z.infer<typeof updateProfileScema>;
 
@@ -69,7 +70,7 @@ const UpdateProfile = () => {
           imgForm.append("oldPublicId", avatarId);
         }
 
-        const res = await fetch("", {
+        const res = await fetch("/api/cloudinaryUpload", {
           method: "POST",
           body: imgForm,
         });
@@ -78,11 +79,21 @@ const UpdateProfile = () => {
 
         if (data.success) {
           uploadedImageUrl = data.result.secure_url;
-          uploadedPublicId = data.result.publicId;
+          uploadedPublicId = data.result.public_id;
         }
       }
 
-      //   if (!res.ok) throw new Error("Failed to update User");
+      const res = await fetch("/api/users/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          avatar: uploadedImageUrl,
+          avatarId: uploadedPublicId,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update User");
 
       toast.success("Profile updated successfully!");
       refreshUser();
@@ -149,7 +160,10 @@ const UpdateProfile = () => {
               id="avatar-upload"
               type="file"
               accept="image/*"
-              onChange={(e) => setProfilePic(e.target.files?.[0] || null)}
+              onChange={(e) => {
+                setProfilePic(e.target.files?.[0] || null);
+                setProfilePicChanged(true);
+              }}
               className="hidden"
             />
           </div>
@@ -237,7 +251,7 @@ const UpdateProfile = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            disabled={!isDirty || isSubmitting}
+            disabled={(!isDirty || isSubmitting) && !profilePicChanged}
             className="w-full rounded hover:translate-0"
           >
             {isSubmitting ? "Updating..." : "Update Profile"}
