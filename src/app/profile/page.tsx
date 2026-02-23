@@ -159,9 +159,17 @@ const Profile = () => {
                 label="Date of Birth"
                 value={dob instanceof Date ? dob.toLocaleDateString() : dob}
               />
-              <UserDetailsList label="Gender" value={gender} />
+              <UserDetailsList
+                label="Gender"
+                value={gender}
+                className="capitalize"
+              />
               <UserDetailsList label="Blood" value={"ab"} />
-              <UserDetailsList label="Nationality" value={nationality} />
+              <UserDetailsList
+                label="Nationality"
+                value={nationality}
+                className="capitalize"
+              />
               <UserDetailsList
                 label="Address"
                 value={address}
