@@ -11,6 +11,14 @@ export async function POST(request: Request) {
 
     const { firstName, lastName, email, password } = await request.json();
 
+    // Basic validation
+    if (!firstName || !email || !password) {
+      return Response.json(
+        { message: "FirstName, Email and password are required" },
+        { status: 400 },
+      );
+    }
+
     const username = await generateUniqueUsername(firstName, lastName);
     const hashedPassword = await bcrypt.hash(password, 10);
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();

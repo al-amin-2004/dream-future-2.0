@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 import Input from "../../_components/ui/Input";
 import Label from "../../_components/ui/Label";
 import { Button } from "@/app/_components/ui/Button";
@@ -19,22 +20,50 @@ import {
   MailIcon,
   UserIcon,
 } from "lucide-react";
+import z from "zod";
+import { signinSchema } from "@/schemas/signInSchema";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
-interface SignUpData {
-  email: string;
-  password: string;
-}
-
-interface SignUpErrors {
-  email?: string;
-  password?: string;
-}
+type SigninFormData = z.infer<typeof signinSchema>;
 
 const SignUp = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [errors, setErrors] = useState<SignUpErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [login, setLogin] = useState<SignUpData>({ email: "", password: "" });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SigninFormData>({ resolver: zodResolver(signinSchema) });
+
+  const onSubmit = async (formData: SigninFormData) => {
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message || "Login failed");
+      }
+
+      toast.success(data.message);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <RegistrationCard className="w-full max-w-md  mt-20">
@@ -51,7 +80,7 @@ const SignUp = () => {
         </RegistrationCardDescription>
       </RegistrationCardHeader>
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Email Input */}
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
@@ -61,17 +90,15 @@ const SignUp = () => {
               className="absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none text-gray-500"
             />
             <Input
-              type="email"
-              id="email"
-              name="email"
-              value={login.email}
-              onChange={(e) => setLogin({ ...login, email: e.target.value })}
               placeholder="name@example.com"
+              {...register("email")}
               className="pl-8 md:pl-9"
             />
           </div>
           {errors.email && (
-            <p className="text-red-400 text-xs -mt-1.5">{errors.email}</p>
+            <p className="text-red-400 text-xs -mt-1.5">
+              {errors.email.message}
+            </p>
           )}
         </div>
 
@@ -85,11 +112,8 @@ const SignUp = () => {
             />
             <Input
               type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              value={login.password}
-              onChange={(e) => setLogin({ ...login, password: e.target.value })}
               placeholder="Inter your password"
+              {...register("password")}
               className="pl-8 md:pl-9 pr-10"
             />
             <button
@@ -101,7 +125,9 @@ const SignUp = () => {
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-400 text-xs -mt-1.5">{errors.password}</p>
+            <p className="text-red-400 text-xs -mt-1.5">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
