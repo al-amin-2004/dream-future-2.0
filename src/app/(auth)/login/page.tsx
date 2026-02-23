@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signinSchema } from "@/schemas/signInSchema";
+import { useUser } from "@/providers/UserContext";
 import Input from "../../_components/ui/Input";
 import Label from "../../_components/ui/Label";
 import { Button } from "@/app/_components/ui/Button";
+import z from "zod";
 import {
   RegistrationCard,
   RegistrationCardDescription,
@@ -20,11 +26,6 @@ import {
   MailIcon,
   UserIcon,
 } from "lucide-react";
-import z from "zod";
-import { signinSchema } from "@/schemas/signInSchema";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 type SigninFormData = z.infer<typeof signinSchema>;
 
@@ -32,6 +33,7 @@ const SignUp = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { refreshUser } = useUser();
 
   const {
     register,
@@ -56,6 +58,7 @@ const SignUp = () => {
       }
 
       toast.success(data.message);
+      refreshUser();
       router.push("/");
     } catch (error) {
       console.error(error);

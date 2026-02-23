@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useUser } from "@/providers/UserContext";
+import { emailMasking } from "@/helpers/MaskEmail";
+import { formatTime } from "@/helpers/formatTime";
 import { Button } from "@/app/_components/ui/Button";
 import { Loader2, ShieldCheck } from "lucide-react";
-import { emailMasking } from "@/helpers/MaskEmail";
 import { toast } from "sonner";
 import {
   RegistrationCard,
@@ -19,11 +21,11 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { formatTime } from "@/helpers/formatTime";
 
 const VarificationPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { refreshUser } = useUser();
   const [otp, setOtp] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -95,6 +97,7 @@ const VarificationPage = () => {
         return;
       }
 
+      refreshUser();
       toast.success(data.message, {
         duration: 1500,
         onAutoClose: () => {
