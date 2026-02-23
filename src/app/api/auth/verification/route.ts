@@ -12,6 +12,10 @@ import dbConnect from "@/lib/dbConnect";
 import ValidationModel from "@/models/OTPValidation";
 import UserModel from "@/models/User";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+
+const jwtSecret = process.env.JWT_SECRET;
 
 export async function POST(req: Request) {
   try {
@@ -77,6 +81,23 @@ export async function POST(req: Request) {
 
     // Delete OTP record
     await ValidationModel.deleteOne({ userId });
+
+    // Token set with JWT in cookie
+    if (!jwtSecret) throw new Error("JWT_SECRET is not defiend!");
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, role: user.role },
+      jwtSecret,
+    );
+
+    const cookieStore = await cookies();
+    cookieStore.set("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 24 * 60 * 60,
+      path: "/",
+      priority: "high",
+    });
 
     return Response.json(
       { success: true, message: "Email verified successfully." },
