@@ -93,6 +93,7 @@ const SignUp = () => {
               className="absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none text-gray-500"
             />
             <Input
+              id="email"
               placeholder="name@example.com"
               {...register("email")}
               className="pl-8 md:pl-9"
@@ -114,6 +115,7 @@ const SignUp = () => {
               className="absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none text-gray-500"
             />
             <Input
+              id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Inter your password"
               {...register("password")}

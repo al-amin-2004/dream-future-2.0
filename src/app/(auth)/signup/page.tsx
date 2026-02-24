@@ -88,14 +88,18 @@ const SignUp = () => {
         <div className="flex gap-2">
           <div className="w-full space-y-2">
             <Label htmlFor="firstName">First name</Label>
-            <Input placeholder="John" {...register("firstName")} />
+            <Input
+              id="firstName"
+              placeholder="John"
+              {...register("firstName")}
+            />
             {errors.firstName && (
               <p className="text-red-500 text-xs">{errors.firstName.message}</p>
             )}
           </div>
           <div className="w-full space-y-2">
             <Label htmlFor="lastName">Last name</Label>
-            <Input placeholder="Doe" {...register("lastName")} />
+            <Input id="lastName" placeholder="Doe" {...register("lastName")} />
             {errors.lastName && (
               <p className="text-red-500 text-xs">{errors.lastName.message}</p>
             )}
@@ -111,6 +115,7 @@ const SignUp = () => {
               className="absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none text-gray-500"
             />
             <Input
+              id="email"
               placeholder="example@gmail.com"
               {...register("email")}
               className="pl-8 md:pl-9"
@@ -130,6 +135,7 @@ const SignUp = () => {
               className="absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none text-gray-500"
             />
             <Input
+              id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Create a password"
               {...register("password")}
