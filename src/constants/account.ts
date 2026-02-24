@@ -1,0 +1,1 @@
+export const accStatus = ["active", "block"] as const
