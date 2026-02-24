@@ -15,7 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "../_components/ui/Button";
+import FinancialAccCreatepage from "../(auth)/createFinancialAccount/page";
 
 const Profile = () => {
   const { user, loading } = useUser();
@@ -143,7 +143,7 @@ const Profile = () => {
             </div>
           ) : (
             <div className="border-2 p-3.5 md:p-6 rounded-xl flex justify-end">
-              <Button>Open an Account</Button>
+              <FinancialAccCreatepage/>
             </div>
           )}
 
