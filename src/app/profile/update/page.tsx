@@ -35,8 +35,6 @@ const UpdateProfile = () => {
     resolver: zodResolver(updateProfileScema),
   });
 
-  console.log(user);
-
   // load Initial data
   useEffect(() => {
     if (user) {

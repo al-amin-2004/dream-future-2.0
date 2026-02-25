@@ -1,5 +1,5 @@
 import { accStatus } from "@/constants/account";
-import { IAccount } from "@/types/account";
+import { IAccount } from "@/types";
 import mongoose, { Schema } from "mongoose";
 
 const accountSchema = new Schema<IAccount>(
