@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import LogoutButton from "@/app/(auth)/components/ui/LogoutButton";
 import { ChevronDown, PanelLeft, PanelRight, User } from "lucide-react";
 import Notification from "../ui/Notification";
-import Rewards from "../ui/Rewards";
+// import Rewards from "../ui/Rewards";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -75,7 +75,7 @@ const Header = () => {
         <Notification />
 
         {/* Rewards components */}
-        <Rewards>{activeAccount?.totalRewards || 0}</Rewards>
+        {/* <Rewards>{activeAccount?.totalRewards || 0}</Rewards> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger>

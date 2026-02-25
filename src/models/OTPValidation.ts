@@ -1,5 +1,5 @@
 import { verification } from "@/constants/verification";
-import { IVerificationType } from "@/types/otpValidation";
+import { IVerificationType } from "@/types";
 import mongoose, { Schema } from "mongoose";
 
 const validationSchema = new Schema<IVerificationType>(

@@ -1,12 +1,12 @@
 // ***** Code flow this page ******* \\
 // 1. Get token from cookie
 // 2. Decode token
-// 3. Get user from database
+// 3. Get Accounts from database
 
 import dbConnect from "@/lib/dbConnect";
-import { cookies } from "next/headers";
+import AccountModel from "@/models/Account";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import UserModel from "@/models/User";
+import { cookies } from "next/headers";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -19,29 +19,29 @@ export async function GET() {
 
     if (!token) {
       return Response.json(
-        { ok: false, message: "No auth token" },
+        { ok: false, message: "Unauthorized" },
         { status: 401 },
       );
     }
 
-    const decode = jwt.verify(token, JWT_SECRET) as JwtPayload & {
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload & {
       userId: string;
     };
-
-    const user = await UserModel.findOne({ _id: decode.userId })
-      .select("-password")
+    
+    const accounts = await AccountModel.find({ userId: decoded.userId })
+      .sort({ createdAt: 1 })
       .lean();
 
-    if (!user) {
+    if (accounts.length === 0) {
       return Response.json(
-        { ok: false, message: "User not found" },
+        { ok: false, message: "account not found" },
         { status: 404 },
       );
     }
 
-    return Response.json({ ok: true, user });
+    return Response.json({ ok: true, accounts });
   } catch (error) {
-    console.error("me route error:", error);
+    console.error("accounts route error:", error);
     return Response.json(
       { ok: false, message: "Server error" },
       { status: 500 },

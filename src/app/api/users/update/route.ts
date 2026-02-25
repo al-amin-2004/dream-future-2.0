@@ -1,3 +1,9 @@
+// ***** Code flow this page ******* \\
+// 1. Besic inputs validation
+// 2. Get token from cookie
+// 3. Decode token
+// 4. Find by id and update user
+
 import dbConnect from "@/lib/dbConnect";
 import { cookies } from "next/headers";
 import jwt, { JwtPayload } from "jsonwebtoken";
