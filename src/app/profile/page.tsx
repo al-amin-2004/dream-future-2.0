@@ -6,6 +6,7 @@ import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import { useUser } from "@/providers/UserContext";
 import { useAccounts } from "@/providers/AccountContext";
 import UserDetailsList from "@/app/_components/ui/UserDetailsList";
+import FinancialAccCreatepage from "../(auth)/components/ui/CreateFinancialAccount";
 // import RequestForm from "./_components//RequestForm";
 import { Loading2 } from "@/icons";
 import { motion } from "framer-motion";
@@ -15,12 +16,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import FinancialAccCreatepage from "../(auth)/createFinancialAccount/page";
 
 const Profile = () => {
   const { user, loading } = useUser();
-  const { activeAccount } = useAccounts();
-
+  const { accounts, activeAccount } = useAccounts();
+  
   if (loading)
     return (
       <div className="flex justify-center items-center h-[calc(100vh-85px)]">
@@ -90,8 +90,8 @@ const Profile = () => {
         </motion.div>
 
         {/* Top right side */}
-        <motion.div variants={fadeUp} className="flex-3 flex flex-col gap-8 ">
-          {false ? (
+        <motion.div variants={fadeUp} className="flex-3 flex flex-col gap-8">
+          {accounts ? (
             <div className="border-2 p-3.5 md:p-6 rounded-xl">
               <div className="flex justify-between py-3 border-b">
                 <h1 className="text-xl font-semibold">Balance quiry</h1>
@@ -143,7 +143,7 @@ const Profile = () => {
             </div>
           ) : (
             <div className="border-2 p-3.5 md:p-6 rounded-xl flex justify-end">
-              <FinancialAccCreatepage/>
+              <FinancialAccCreatepage />
             </div>
           )}
 

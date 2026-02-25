@@ -30,7 +30,7 @@ const FinancialAccCreatepage = () => {
 
     setIsLoading(true);
     try {
-      const res = await fetch("/api/account/create", {
+      const res = await fetch("/api/accounts/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accName: value }),
