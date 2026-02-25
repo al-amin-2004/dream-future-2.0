@@ -7,7 +7,7 @@ import { useUser } from "@/providers/UserContext";
 import { useAccounts } from "@/providers/AccountContext";
 import UserDetailsList from "@/app/_components/ui/UserDetailsList";
 import FinancialAccCreatepage from "../(auth)/components/ui/CreateFinancialAccount";
-// import RequestForm from "./_components//RequestForm";
+import RequestForm from "../profile/_components/ui/RequestForm";
 import { Loading2 } from "@/icons";
 import { motion } from "framer-motion";
 import { fadeUp, fade, stagger } from "@/lib/motion";
@@ -180,7 +180,7 @@ const Profile = () => {
         </motion.div>
       </motion.div>
 
-      {/* <RequestForm /> */}
+      <RequestForm />
     </motion.div>
   );
 };
