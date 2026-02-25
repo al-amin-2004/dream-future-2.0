@@ -171,15 +171,19 @@ const UpdateProfile = () => {
           {/* First & Last Name */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label className="block text-gray-200 mb-1">First Name</Label>
-              <Input {...register("firstName")} />
+              <Label htmlFor="firstName" className="mb-1">
+                First Name
+              </Label>
+              <Input id="firstName" {...register("firstName")} />
               {errors.firstName && (
                 <ErrorMessage>{errors.firstName.message}</ErrorMessage>
               )}
             </div>
             <div>
-              <Label className="block text-gray-200 mb-1">Last Name</Label>
-              <Input {...register("lastName")} />
+              <Label htmlFor="lastName" className="mb-1">
+                Last Name
+              </Label>
+              <Input id="lastName" {...register("lastName")} />
               {errors.lastName && (
                 <ErrorMessage>{errors.lastName.message}</ErrorMessage>
               )}
@@ -189,16 +193,20 @@ const UpdateProfile = () => {
           {/* Number & Date of Birth */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label className="block text-gray-200 mb-1">Phone Number</Label>
-              <Input {...register("number")} />
+              <Label htmlFor="number" className="mb-1">
+                Phone Number
+              </Label>
+              <Input id="number" {...register("number")} />
               {errors.number && (
                 <ErrorMessage>{errors.number.message}</ErrorMessage>
               )}
             </div>
 
             <div>
-              <Label className="block text-gray-200 mb-1">Date of Birth</Label>
-              <Input type="date" {...register("birthday")} />
+              <Label htmlFor="dateOfBirth" className="mb-1">
+                Date of Birth
+              </Label>
+              <Input id="dateOfBirth" type="date" {...register("birthday")} />
               {errors.birthday && (
                 <ErrorMessage>{errors.birthday.message}</ErrorMessage>
               )}
@@ -208,8 +216,11 @@ const UpdateProfile = () => {
           {/* Nationality & Gender */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block mb-1">Nationality</label>
+              <Label htmlFor="nationality" className="mb-1">
+                Nationality
+              </Label>
               <select
+                id="nationality"
                 {...register("nationality")}
                 className="w-full p-2 bg-background border rounded-md"
               >
@@ -223,8 +234,11 @@ const UpdateProfile = () => {
             </div>
 
             <div>
-              <label className="block text-gray-200 mb-1">Gender</label>
+              <Label htmlFor="gender" className="mb-1">
+                Gender
+              </Label>
               <select
+                id="gender"
                 {...register("gender")}
                 className="w-full p-2 bg-background border rounded-md"
               >
@@ -240,8 +254,11 @@ const UpdateProfile = () => {
 
           {/* Address */}
           <div>
-            <label className="block text-gray-200 mb-1">Address</label>
+            <Label htmlFor="address" className="mb-1">
+              Address
+            </Label>
             <textarea
+              id="address"
               {...register("address")}
               rows={3}
               className="w-full p-2 border rounded-md"

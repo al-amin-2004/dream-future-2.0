@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const { userId } = await request.json();
     if (!userId) {
       return Response.json(
-        { success: false, message: "UserID not found." },
+        { success: false, message: "UserId not found." },
         { status: 404 },
       );
     }
