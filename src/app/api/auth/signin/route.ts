@@ -1,3 +1,11 @@
+// ***** Code flow this page ******* \\
+// 1. Input validate
+// 2. User find from database
+// 3. If email is verified
+// 4. Compare password by bcrypt
+// 5. Create auth token
+// 6. Set auth token in cookie
+
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import bcrypt from "bcryptjs";
@@ -11,7 +19,6 @@ export async function POST(reqeust: Request) {
     await dbConnect();
 
     const { email, password } = await reqeust.json();
-    // Basic validation
     if (!email || !password) {
       return Response.json(
         { message: "Email and password are required" },
@@ -49,7 +56,8 @@ export async function POST(reqeust: Request) {
     if (!jwtSecret) throw new Error("JWT_SECRET is not defiend!");
     const token = jwt.sign(
       { userId: user._id, email: user.email, role: user.role },
-      jwtSecret,{expiresIn: "40d"}
+      jwtSecret,
+      { expiresIn: "40d" },
     );
 
     const cookieStore = await cookies();
