@@ -57,11 +57,12 @@ const RequestForm = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("", {
+      const res = await fetch("/api/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           accountId: activeAccount?._id,
+          requestType: "deposit",
           ...formData,
         }),
       });
