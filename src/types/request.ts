@@ -17,7 +17,8 @@ export interface IRequest {
   amount: number;
   method?: PaymentMethods;
   transactionId?: string;
-  status?: RequestStatus;
+  status: RequestStatus;
   processedBy?: ObjectId | string;
   processedAt?: Date;
+  createdAt: Date;
 }
