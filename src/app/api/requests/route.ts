@@ -5,9 +5,10 @@
 // 4. Get token from cookie for user id
 // 5. Decode token by JWT
 // 6. Account ownership check
-// 7. Deposit duplicate month check
-// 8. Withdraw balance check
-// 9. Create Request
+// 7. Account status check
+// 8. Deposit duplicate month check
+// 9. Withdraw balance check
+// 10. Create Request
 
 import { paymentMethods, requestTypes } from "@/constants/request";
 import dbConnect from "@/lib/dbConnect";
@@ -78,6 +79,14 @@ export async function POST(request: Request) {
     }
     if (account.userId.toString() !== decode.userId) {
       return Response.json({ error: "Access denied" }, { status: 403 });
+    }
+
+    // Account status check
+    if (account.status === "block") {
+      return Response.json(
+        { error: "Account is blocked. Cannot make requests." },
+        { status: 403 },
+      );
     }
 
     // Deposit duplicate month check
