@@ -59,16 +59,22 @@ const DepositRequestForm = ({ open, setOpen }: DepositRequestFormProps) => {
     setLoading(true);
 
     try {
-      const res = await fetch("", {
+      const res = await fetch("/api/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           accountId: activeAccount?._id,
+          requestType: "deposit",
           ...formData,
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to deposit request");
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+        throw new Error(data.message || "Failed to deposit request");
+      }
 
       toast.success("Deposit request submitted!");
       setOpen(false);
