@@ -47,14 +47,17 @@ export async function POST(request: Request) {
     // Payment method validation
     if (!paymentMethods.includes(method)) {
       return Response.json(
-        { error: "Invalid payment method" },
+        { message: "Invalid payment method" },
         { status: 400 },
       );
     }
 
     // Request Type validation
     if (!requestTypes.includes(requestType)) {
-      return Response.json({ error: "Invalid request type" }, { status: 400 });
+      return Response.json(
+        { message: "Invalid request type" },
+        { status: 400 },
+      );
     }
 
     // Get user id
@@ -75,16 +78,16 @@ export async function POST(request: Request) {
     // Account ownership check
     const account = await AccountModel.findById(accountId);
     if (!account) {
-      return Response.json({ error: "Account not found" }, { status: 404 });
+      return Response.json({ message: "Account not found" }, { status: 404 });
     }
     if (account.userId.toString() !== decode.userId) {
-      return Response.json({ error: "Access denied" }, { status: 403 });
+      return Response.json({ message: "Access denied" }, { status: 403 });
     }
 
     // Account status check
     if (account.status === "block") {
       return Response.json(
-        { error: "Account is blocked. Cannot make requests." },
+        { message: "Account is blocked. Cannot make requests." },
         { status: 403 },
       );
     }
@@ -100,7 +103,7 @@ export async function POST(request: Request) {
 
       if (existing) {
         return Response.json(
-          { error: "Deposit already requested for this month" },
+          { message: "Deposit already requested for this month" },
           { status: 400 },
         );
       }
@@ -110,7 +113,7 @@ export async function POST(request: Request) {
     if (requestType === "withdraw") {
       if (account.balance < amount) {
         return Response.json(
-          { error: "Insufficient balance" },
+          { message: "Insufficient balance" },
           { status: 400 },
         );
       }
