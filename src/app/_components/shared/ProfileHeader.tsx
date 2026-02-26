@@ -55,17 +55,17 @@ const Header = () => {
       <div className="flex items-center gap-4 md:gap-5">
         {accounts.length > 1 && (
           <ul className="hidden md:flex gap-2.5">
-            {accounts.map((account, idx) => (
+            {accounts.map((account) => (
               <li
-                key={idx}
+                key={account._id}
                 onClick={() => setActiveAccount(account)}
                 className={cn(
-                  "p-2 bg-green-500/15 text-green-500 size-8 rounded-full flex justify-center items-center cursor-pointer",
+                  "py-1 px-2.5 bg-slate-400/25 text-slate-50 rounded-full flex justify-center items-center cursor-pointer",
                   account._id === activeAccount?._id &&
-                    "text-red-400 ring ring-red-400 bg-red-400/15",
+                    "text-green-500 ring ring-green-400 bg-green-500/15",
                 )}
               >
-                {idx + 1}
+                {account.accName}
               </li>
             ))}
           </ul>
@@ -156,13 +156,12 @@ const Header = () => {
                   </SelectTrigger>
 
                   <SelectContent>
-                    {accounts.map((account, idx) => (
+                    {accounts.map((account) => (
                       <SelectItem
                         key={String(account._id)}
                         value={String(account._id)}
                       >
-                        Account {idx + 1}
-                        {idx + 1 === 1 && " (Main)"}
+                        Account {account.accName}
                       </SelectItem>
                     ))}
                   </SelectContent>
