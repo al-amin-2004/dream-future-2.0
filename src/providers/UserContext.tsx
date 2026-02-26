@@ -27,15 +27,26 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const refreshUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/users/me", { cache: "no-store" });
+      const res = await fetch("/api/users/me", {
+        cache: "no-store",
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        setUser(null);
+        return;
+      }
+
       const data = await res.json();
 
       if (data.ok) setUser(data.user);
       else setUser(null);
-    } catch {
+    } catch (error) {
+      console.error("User fetch error:", error);
       setUser(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

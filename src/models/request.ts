@@ -9,7 +9,7 @@ import mongoose, { Schema } from "mongoose";
 const requestSchema = new Schema<IRequest>(
   {
     accountId: { type: Schema.Types.ObjectId, ref: "Account", required: true },
-    requestType: { type: String, enum: requestTypes, required: true },
+    requestType: { type: String, enum: requestTypes, default: "deposit", required: true },
     month: { type: String },
     amount: { type: Number, required: true, min: 1 },
     method: { type: String, enum: paymentMethods, default: "bkash" },
