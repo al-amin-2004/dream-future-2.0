@@ -7,7 +7,7 @@ import { useUser } from "@/providers/UserContext";
 import { useAccounts } from "@/providers/AccountContext";
 import UserDetailsList from "@/app/_components/ui/UserDetailsList";
 import FinancialAccCreatepage from "../(auth)/components/ui/CreateFinancialAccount";
-import RequestForm from "../profile/_components/ui/RequestForm";
+import RequestForm from "./_components/ui/RequestForm";
 import { Loading2 } from "@/icons";
 import { motion } from "framer-motion";
 import { fadeUp, fade, stagger } from "@/lib/motion";
@@ -20,7 +20,7 @@ import {
 const Profile = () => {
   const { user, loading } = useUser();
   const { accounts, activeAccount } = useAccounts();
-  
+
   if (loading)
     return (
       <div className="flex justify-center items-center h-[calc(100vh-85px)]">
@@ -180,6 +180,7 @@ const Profile = () => {
         </motion.div>
       </motion.div>
 
+      {/* Request form */}
       <RequestForm />
     </motion.div>
   );
