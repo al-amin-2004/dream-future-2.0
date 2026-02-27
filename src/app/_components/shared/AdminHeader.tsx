@@ -3,16 +3,12 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { useSidebar } from "@/providers/SidebarContext";
 import { useUser } from "@/providers/UserContext";
-import { useAccounts } from "@/providers/AccountContext";
-import { Button } from "@/app/_components/ui/Button";
+import { ChevronDown, User } from "lucide-react";
+import { Button } from "../ui/Button";
 import { Skeleton } from "@/components/ui/skeleton";
 import LogoutButton from "@/app/(auth)/components/ui/LogoutButton";
-import { ChevronDown, PanelLeft, PanelRight, User } from "lucide-react";
 import Notification from "../ui/Notification";
-// import Rewards from "../ui/Rewards";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,52 +26,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
-const ProfileHeader: FC = () => {
-  const { accounts, activeAccount, setActiveAccount } = useAccounts();
-  const [showLogoutDialog, setShowLogoutDialog] = useState<boolean>(false);
-  const { open, toggle } = useSidebar();
+const AdminHeader: FC = () => {
   const { user, loading } = useUser();
-
+  const [showLogoutDialog, setShowLogoutDialog] = useState<boolean>(false);
   return (
     <header className="py-4 md:py-5 px-6 flex items-center justify-end md:justify-between border-b border-zinc-700 sticky top-0 z-50 bg-background">
       {/* left side */}
-      <button onClick={toggle} className="hidden md:block cursor-pointer">
-        {open ? <PanelLeft /> : <PanelRight />}
-      </button>
-
+      <div></div>
       {/* right side */}
       <div className="flex items-center gap-4 md:gap-5">
-        {accounts.length > 1 && (
-          <ul className="hidden md:flex gap-2.5">
-            {accounts.map((account) => (
-              <li
-                key={account._id}
-                onClick={() => setActiveAccount(account)}
-                className={cn(
-                  "py-1 px-2.5 bg-slate-400/25 text-slate-50 rounded-full flex justify-center items-center cursor-pointer",
-                  account._id === activeAccount?._id &&
-                    "text-green-500 ring ring-green-400 bg-green-500/15",
-                )}
-              >
-                {account.accName}
-              </li>
-            ))}
-          </ul>
-        )}
-
         {/* Notification component */}
         <Notification />
-
-        {/* Rewards components */}
-        {/* <Rewards>{activeAccount?.totalRewards || 0}</Rewards> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -141,44 +103,16 @@ const ProfileHeader: FC = () => {
                   <p className="text-xs text-primary">{user?.role}</p>
                 </div>
               </DropdownMenuItem>
-              {accounts.length > 1 && (
-                <Select
-                  value={activeAccount ? String(activeAccount._id) : undefined}
-                  onValueChange={(value) => {
-                    const selected = accounts.find(
-                      (acc) => String(acc._id) === value,
-                    );
-                    if (selected) setActiveAccount(selected);
-                  }}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select account" />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    {accounts.map((account) => (
-                      <SelectItem
-                        key={String(account._id)}
-                        value={String(account._id)}
-                      >
-                        Account {account.accName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
             </DropdownMenuGroup>
 
-            {user?.role === "admin" && (
-              <div>
-                <Link href="admin/">
-                  <DropdownMenuItem className="cursor-pointer">
-                    Admin Panel
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-              </div>
-            )}
+            <div>
+              <Link href="profile/">
+                <DropdownMenuItem className="cursor-pointer">
+                  My Profile
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+            </div>
 
             <DropdownMenuItem
               className="cursor-pointer"
@@ -212,4 +146,4 @@ const ProfileHeader: FC = () => {
   );
 };
 
-export default ProfileHeader;
+export default AdminHeader;

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import Sidebar from "../_components/shared/ProfileSidebar";
 import { SidebarProvider } from "@/providers/SidebarContext";
-import Header from "../_components/shared/ProfileHeader";
+import ProfileHeader from "../_components/shared/ProfileHeader";
 import { UserProvider } from "@/providers/UserContext";
 import { AccountProvider } from "@/providers/AccountContext";
 
@@ -14,7 +14,7 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
         <UserProvider>
           <AccountProvider>
             <div className="flex-1 overflow-y-scroll">
-              <Header />
+              <ProfileHeader />
               <section className="px-6 md:px-14">{children}</section>
             </div>
           </AccountProvider>
