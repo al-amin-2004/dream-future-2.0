@@ -23,7 +23,7 @@ const sidebarItems = [
   { label: "Settings", icon: <Settings />, link: "/profile/settings" },
 ];
 
-const Sidebar: FC = () => {
+const ProfileSidebar: FC = () => {
   const pathname = usePathname();
   const { open } = useSidebar();
   const [navOpen, setNavOpen] = useState<boolean>(false);
@@ -33,13 +33,13 @@ const Sidebar: FC = () => {
         className={cn(
           "fixed md:static bg-background h-screen z-60 md:p-2 border-r border-zinc-700 transition-all duration-400 ease-in-out",
           navOpen ? "w-[calc(100%-30px)]" : "w-0",
-          open ? "md:w-84" : "md:w-25"
+          open ? "md:w-84" : "md:w-25",
         )}
       >
         <LeftArrowIcon
           className={cn(
             "md:hidden size-10 cursor-pointer mt-3.5 mr-6 ml-auto z-60 transition",
-            navOpen ? "rotate-0" : "rotate-180 -mr-12"
+            navOpen ? "rotate-0" : "rotate-180 -mr-12",
           )}
           onClick={() => setNavOpen(!navOpen)}
         />
@@ -55,14 +55,14 @@ const Sidebar: FC = () => {
                     className={cn(
                       "flex items-center gap-2 rounded text-nowrap cursor-pointer",
                       { "hover:bg-slate-400/20": open && !navActive },
-                      { "bg-primary": open && navActive }
+                      { "bg-primary": open && navActive },
                     )}
                   >
                     <div
                       className={cn(
                         "p-2.5 rounded-full",
                         { "hover:bg-slate-400/20": !open && !navActive },
-                        { "bg-primary": !open && navActive }
+                        { "bg-primary": !open && navActive },
                       )}
                     >
                       {item.icon}
@@ -79,7 +79,7 @@ const Sidebar: FC = () => {
                   "flex items-center gap-2 rounded cursor-pointer",
                   {
                     "hover:bg-slate-400/20": open,
-                  }
+                  },
                 )}
               >
                 <div
@@ -99,4 +99,4 @@ const Sidebar: FC = () => {
   );
 };
 
-export default Sidebar;
+export default ProfileSidebar;
