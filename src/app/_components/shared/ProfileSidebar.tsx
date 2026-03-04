@@ -6,15 +6,8 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/providers/SidebarContext";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { LeftArrowIcon } from "@/icons";
-import {
-  DoorOpen,
-  History,
-  Info,
-  Settings,
-  User,
-  UserRoundPen,
-} from "lucide-react";
+import { Exit, LeftArrowIcon } from "@/icons";
+import { History, Info, Settings, User, UserRoundPen } from "lucide-react";
 
 const sidebarItems = [
   { label: "Profile", icon: <User />, link: "/profile" },
@@ -90,7 +83,7 @@ const ProfileSidebar: FC = () => {
                   "hover:bg-slate-300/30": !open,
                 })}
               >
-                <DoorOpen />
+                <Exit className="fill-red-500" />
               </div>
               <p>{open && "Exit"}</p>
             </Link>

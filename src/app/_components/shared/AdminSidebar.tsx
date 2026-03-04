@@ -6,12 +6,11 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/providers/SidebarContext";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { LeaderBoard, LeftArrowIcon } from "@/icons";
+import { Exit, LeaderBoard, LeftArrowIcon } from "@/icons";
 import {
   ArrowLeftRight,
   CalendarDays,
   ClockArrowUp,
-  DoorOpen,
   Flag,
   Info,
   LayoutDashboard,
@@ -146,7 +145,7 @@ const AdminSidebar: FC = () => {
                   "hover:bg-slate-300/30": !open,
                 })}
               >
-                <DoorOpen />
+                <Exit className="fill-red-500" />
               </div>
               <p>{open && "Exit"}</p>
             </Link>
