@@ -6,25 +6,52 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/providers/SidebarContext";
 import {
+  ArrowLeftRight,
+  CalendarDays,
+  ClockArrowUp,
   DoorOpen,
-  History,
+  Flag,
   Info,
+  LayoutDashboard,
+  Megaphone,
   Settings,
-  User,
-  UserRoundPen,
+  UserCog,
+  Users,
+  Wallet,
 } from "lucide-react";
 import { LeftArrowIcon } from "@/icons";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 const sidebarItems = [
-  { label: "Profile", icon: <User />, link: "/profile" },
-  { label: "History", icon: <History />, link: "/profile/history" },
-  { label: "Info", icon: <Info />, link: "/profile/info" },
-  { label: "Update Profle", icon: <UserRoundPen />, link: "/profile/update" },
-  { label: "Settings", icon: <Settings />, link: "/profile/settings" },
+  { label: "Dashboard", icon: <LayoutDashboard />, link: "/admin" },
+  { label: "Members", icon: <Users />, link: "/admin/members" },
+  { label: "Accounts", icon: <Wallet />, link: "/admin/accounts" },
+  {
+    label: "Transactions",
+    icon: <ArrowLeftRight />,
+    link: "/admin/transactions",
+  },
+  {
+    label: "Pending Requests",
+    icon: <ClockArrowUp />,
+    link: "/admin/requests",
+  },
+  { label: "Announcements", icon: <Megaphone />, link: "/admin/announcements" },
+  { label: "LeaderBoard", icon: <Settings />, link: "/admin/" },
+  { label: "Events", icon: <CalendarDays />, link: "/admin/events" },
+  { label: "Reports", icon: <Flag />, link: "/admin/reports" },
+];
+const sidebarItems2 = [
+  { label: "Settings", icon: <Settings />, link: "/admin/settings" },
+  {
+    label: "Role Management",
+    icon: <UserCog />,
+    link: "/admin/rolemanagement",
+  },
+  { label: "Support", icon: <Info />, link: "/admin/support" },
 ];
 
-const ProfileSidebar: FC = () => {
+const AdminSidebar: FC = () => {
   const pathname = usePathname();
   const { open } = useSidebar();
   const [navOpen, setNavOpen] = useState<boolean>(false);
@@ -45,9 +72,38 @@ const ProfileSidebar: FC = () => {
           onClick={() => setNavOpen(!navOpen)}
         />
 
-        <div className="overflow-hidden">
-          <ul className="space-y-2 p-4">
+        <div className="overflow-hidden h-full flex flex-col justify-between p-3">
+          <ul className="space-y-1.5 p-3">
             {sidebarItems.map((item, idx) => {
+              const navActive = pathname === item.link;
+              return (
+                <li key={idx} onClick={() => setNavOpen(false)}>
+                  <Link
+                    href={item.link}
+                    className={cn(
+                      "flex items-center gap-2 rounded text-nowrap cursor-pointer",
+                      { "hover:bg-slate-400/20": open && !navActive },
+                      { "bg-primary": open && navActive },
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "p-2.5 rounded-full",
+                        { "hover:bg-slate-400/20": !open && !navActive },
+                        { "bg-primary": !open && navActive },
+                      )}
+                    >
+                      {item.icon}
+                    </div>
+                    <p>{open && item.label}</p>
+                  </Link>
+                </li>
+              );
+            })}
+
+            <DropdownMenuSeparator />
+
+            {sidebarItems2.map((item, idx) => {
               const navActive = pathname === item.link;
               return (
                 <li key={idx} onClick={() => setNavOpen(false)}>
@@ -101,4 +157,4 @@ const ProfileSidebar: FC = () => {
   );
 };
 
-export default ProfileSidebar;
+export default AdminSidebar;

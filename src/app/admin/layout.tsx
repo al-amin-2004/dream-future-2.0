@@ -1,6 +1,7 @@
 import { UserProvider } from "@/providers/UserContext";
 import AdminHeader from "../_components/shared/AdminHeader";
-import AdminSidebar from "../_components/shared/AdminSidebar";
+import AdminSidebar from "../_components/shared/AdminSidebar1";
+import { SidebarProvider } from "@/providers/SidebarContext";
 
 export default function AdminLayout({
   children,
@@ -8,15 +9,17 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <UserProvider>
-        <AdminHeader />
+    <SidebarProvider>
+      <main className="flex h-screen overflow-hidden" aria-hidden={false}>
+        <AdminSidebar />
 
-        <main className="flex">
-          <AdminSidebar />
-          <div className="px-6 md:px-14 container">{children}</div>
-        </main>
-      </UserProvider>
-    </>
+        <UserProvider>
+          <div className="flex-1 overflow-y-scroll">
+            <AdminHeader />
+            <section className="px-6 md:px-14">{children}</section>
+          </div>
+        </UserProvider>
+      </main>
+    </SidebarProvider>
   );
 }

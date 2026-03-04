@@ -3,8 +3,9 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSidebar } from "@/providers/SidebarContext";
 import { useUser } from "@/providers/UserContext";
-import { ChevronDown, User } from "lucide-react";
+import { ChevronDown, PanelLeft, PanelRight, User } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Skeleton } from "@/components/ui/skeleton";
 import LogoutButton from "@/app/(auth)/components/ui/LogoutButton";
@@ -28,12 +29,16 @@ import {
 } from "@/components/ui/dialog";
 
 const AdminHeader: FC = () => {
+  const { open, toggle } = useSidebar();
   const { user, loading } = useUser();
   const [showLogoutDialog, setShowLogoutDialog] = useState<boolean>(false);
   return (
     <header className="py-4 md:py-5 px-6 flex items-center justify-end md:justify-between border-b border-zinc-700 sticky top-0 z-50 bg-background">
       {/* left side */}
-      <div></div>
+      <button onClick={toggle} className="hidden md:block cursor-pointer">
+        {open ? <PanelLeft /> : <PanelRight />}
+      </button>
+
       {/* right side */}
       <div className="flex items-center gap-4 md:gap-5">
         {/* Notification component */}
