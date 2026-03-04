@@ -5,6 +5,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/providers/SidebarContext";
+import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { LeftArrowIcon } from "@/icons";
 import {
   DoorOpen,
   History,
@@ -13,8 +15,6 @@ import {
   User,
   UserRoundPen,
 } from "lucide-react";
-import { LeftArrowIcon } from "@/icons";
-import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 const sidebarItems = [
   { label: "Profile", icon: <User />, link: "/profile" },

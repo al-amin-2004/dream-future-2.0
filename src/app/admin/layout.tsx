@@ -1,6 +1,6 @@
 import { UserProvider } from "@/providers/UserContext";
 import AdminHeader from "../_components/shared/AdminHeader";
-import AdminSidebar from "../_components/shared/AdminSidebar1";
+import AdminSidebar from "../_components/shared/AdminSidebar";
 import { SidebarProvider } from "@/providers/SidebarContext";
 
 export default function AdminLayout({
