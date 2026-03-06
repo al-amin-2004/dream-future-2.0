@@ -9,7 +9,7 @@ interface DialogInfoRowProps {
 
 const DialogInfoRow: FC<DialogInfoRowProps> = ({ label, value, className }) => {
   return (
-    <div className={cn("flex gap-3", className)}>
+    <div className={cn("flex gap-1.5", className)}>
       <span className="text-muted-foreground">{label}:</span>
       <span className="font-medium text-right">{value}</span>
     </div>
