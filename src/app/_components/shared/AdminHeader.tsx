@@ -111,7 +111,7 @@ const AdminHeader: FC = () => {
             </DropdownMenuGroup>
 
             <div>
-              <Link href="profile/">
+              <Link href="/profile/">
                 <DropdownMenuItem className="cursor-pointer">
                   My Profile
                 </DropdownMenuItem>
