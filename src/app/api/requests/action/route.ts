@@ -51,7 +51,7 @@ export async function PATCH(req: Request) {
             balance: requestData.amount,
           },
         },
-        { new: true },
+        { returnDocument: "after" },
       );
 
       requestData.status = "approved";

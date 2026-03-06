@@ -12,7 +12,7 @@ const transactionSchema = new Schema<ITransaction>(
     method: { type: String, enum: paymentMethods },
     transactionDate: { type: Date, default: Date.now },
     newBalance: { type: Number, required: true },
-    profitSource: { type: String, default: "" },
+    profitSource: { type: String },
     processedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true },
