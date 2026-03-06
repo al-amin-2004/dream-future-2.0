@@ -22,6 +22,14 @@ const Transactions = () => {
     );
   }
 
+  /* =============== ALL PENDING STATUS FILTERING =============== */
+  const pendingRequests = allRequests
+    .filter((r) => r.status === "pending")
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+
   const userMap = Object.fromEntries(
     allUsers.map((u) => [u._id?.toString(), u]),
   );
@@ -51,11 +59,11 @@ const Transactions = () => {
     }
   };
 
-  const handleReject = async (id: string | ObjectId, rejectReason: string) => {
+  const handleReject = async (id: string | ObjectId | undefined) => {
     const res = await fetch(`/api/requests/action`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ requestId: id, action: "reject", rejectReason }),
+      body: JSON.stringify({ requestId: id, action: "reject" }),
     });
 
     const data = await res.json();
@@ -92,7 +100,7 @@ const Transactions = () => {
           </thead>
 
           <tbody>
-            {allRequests.map((req) => {
+            {pendingRequests.map((req) => {
               const account = accountMap[req.accountId.toString()];
               const user = userMap[account.userId.toString()];
               return (
@@ -118,9 +126,7 @@ const Transactions = () => {
                     <ActionBtn
                       icon={<X />}
                       danger
-                      onClick={() => {
-                        alert("back here!");
-                      }}
+                      onClick={() => handleReject(req._id)}
                     />
                   </td>
                 </tr>
