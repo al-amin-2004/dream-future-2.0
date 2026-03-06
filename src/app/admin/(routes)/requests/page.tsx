@@ -2,6 +2,7 @@
 
 import ActionBtn from "@/app/_components/ui/ActionBtn";
 import ProfilePageTitle from "@/app/_components/ui/PageTitle";
+import { cn } from "@/lib/utils";
 import { useAllAccounts } from "@/providers/AllAccountsContext";
 import { useAllRequests } from "@/providers/AllRequestsContext";
 import { useAllUsers } from "@/providers/AllUsersContext";
@@ -79,7 +80,7 @@ const Transactions = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-10">
       <ProfilePageTitle
         title="Pending Requests"
         description="Manage all Pending Requests from here"
@@ -113,7 +114,31 @@ const Transactions = () => {
                   </td>
                   <td>{account.accName} </td>
                   <td>৳ {req.amount}</td>
-                  <td>{req.method?.toUpperCase()}</td>
+
+                  <td>
+                    <div className="flex justify-center">
+                      <p
+                        className={cn(
+                          "p-1 w-18 rounded-full bg-white/15",
+                          {
+                            "text-pink-400 bg-pink-400/15":
+                              req.method === "bkash",
+                          },
+                          {
+                            "text-orange-400 bg-orange-400/15":
+                              req.method === "nagad",
+                          },
+                          {
+                            "text-purple-500 bg-purple-400/15":
+                              req.method === "rocket",
+                          },
+                        )}
+                      >
+                        {req.method?.toUpperCase()}
+                      </p>
+                    </div>
+                  </td>
+
                   <td>{req.transactionId}</td>
                   <td>{req.month}</td>
                   <td className="flex justify-center gap-2 py-2">
