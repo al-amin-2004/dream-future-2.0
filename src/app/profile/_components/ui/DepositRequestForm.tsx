@@ -59,7 +59,7 @@ const DepositRequestForm = ({ open, setOpen }: DepositRequestFormProps) => {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/requests", {
+      const res = await fetch("/api/requests/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
