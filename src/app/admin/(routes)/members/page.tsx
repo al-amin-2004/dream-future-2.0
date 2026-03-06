@@ -1,18 +1,79 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import { useAllUsers } from "@/providers/AllUsersContext";
 import { Eye, Shield } from "lucide-react";
+import Input from "@/app/_components/ui/Input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Role } from "@/types";
+import { role } from "@/constants/user";
 
 const Members = () => {
   const { allUsers } = useAllUsers();
+  const [search, setSearch] = useState<string>("");
+  const [roleFilter, setRoleFilter] = useState<"all" | Role>("all");
+
+  const filteredUsers = useMemo(() => {
+    return allUsers.filter((user) => {
+      const keyword = search.toLowerCase();
+
+      const matchSearch =
+        user.firstName.toLowerCase().includes(keyword) ||
+        user.lastName?.toLowerCase().includes(keyword) ||
+        user.email.toLowerCase().includes(keyword) ||
+        user.username.toLowerCase().includes(keyword);
+
+      const matchRole = roleFilter === "all" ? true : user.role === roleFilter;
+
+      return matchSearch && matchRole;
+    });
+  }, [allUsers, search, roleFilter]);
+
   return (
     <div className="space-y-8">
       <ProfilePageTitle
         title="Members"
         description="Manage all registered members"
       />
+
+      {/* ================= SEARCH AND FILTER ================= */}
+      <div className="flex flex-col md:flex-row gap-4">
+        {/* Search */}
+        <Input
+          type="text"
+          placeholder="Search by name or email..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full md:w-80 px-4 py-2 rounded-lg border bg-background outline-none focus:ring-2 focus:ring-primary"
+        />
+
+        {/* Role Filter */}
+        <Select
+          value={roleFilter}
+          onValueChange={(value) => setRoleFilter(value as "all" | Role)}
+        >
+          <SelectTrigger className="w-40">
+            <SelectValue placeholder="Filter role" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="all">All Roles</SelectItem>
+            {role.map((role) => (
+              <SelectItem key={role} value={role} className="capitalize">
+                {role}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       {/* ================= TABLE ================= */}
       <div className="border rounded-xl overflow-hidden">
@@ -27,7 +88,7 @@ const Members = () => {
           </thead>
 
           <tbody className="text-center">
-            {allUsers.map((user) => (
+            {filteredUsers.map((user) => (
               <tr
                 key={user._id}
                 className="border-t hover:bg-muted/40 transition"
