@@ -15,4 +15,5 @@ export interface ITransaction {
   transactionDate: Date;
   newBalance: number;
   profitSource?: string;
+  processedBy: ObjectId | string;
 }

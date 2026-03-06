@@ -13,6 +13,7 @@ const transactionSchema = new Schema<ITransaction>(
     transactionDate: { type: Date, default: Date.now },
     newBalance: { type: Number, required: true },
     profitSource: { type: String, default: "" },
+    processedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true },
 );
