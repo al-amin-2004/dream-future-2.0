@@ -92,6 +92,14 @@ const Transactions = () => {
     }
   };
 
+  if (pendingRequests.length === 0) {
+    return (
+      <div className="p-10 text-center text-muted-foreground">
+        No Request yet!
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-10">
       <ProfilePageTitle
