@@ -14,5 +14,5 @@ export interface ITransaction {
   month?: string;
   transactionDate: Date;
   newBalance: number;
-  profitSource: string;
+  profitSource?: string;
 }
