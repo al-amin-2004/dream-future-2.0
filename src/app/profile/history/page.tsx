@@ -8,6 +8,7 @@ import { useAccounts } from "@/providers/AccountContext";
 // import { ChartAreaInteractive } from "../_components/Graph";
 import {
   HistoryCardGrid,
+  HistoryCardList,
   TransactionCardProps,
 } from "../_components/ui/HistoryCard";
 import {
@@ -108,18 +109,15 @@ const History = () => {
           }`}
         >
           <div
-            className={`w-full rounded-md p-4 min-w-87.5 bg-background grid grid-cols-6 place-items-center font-medium border border-emerald-600 sticky top-0 ${
-              isGrid && "hidden"
-            }`}
+            className={`w-full rounded-md p-4 min-w-87.5 bg-background grid grid-cols-6 place-items-center font-medium border border-primary sticky top-0} ${isGrid && "hidden"}`}
           >
             <p>Transaction Type</p>
             <p>Month</p>
             <p>Date</p>
             <p>Method</p>
             <p>Amount</p>
-            <p>Transition ID / Deposit by</p>
+            <p>New Balance</p>
           </div>
-
           {transactions.map((transaction, idx) => {
             return isGrid ? (
               <HistoryCardGrid
@@ -138,29 +136,27 @@ const History = () => {
                 })}
                 method={transaction.method}
                 amount={transaction.amount}
-                processedBy={transaction.processedBy.firstName}
+                newBalance={transaction.newBalance}
               />
             ) : (
-              // <HistoryCardList
-              //   key={idx}
-              //   transactionType="Deposit"
-              //   month={new Date(transaction.month).toLocaleDateString("en-US", {
-              //     month: "long",
-              //     year: "numeric",
-              //   })}
-              //   depositDate={new Date(
-              //     transaction.depositDate,
-              //   ).toLocaleDateString("en-GB", {
-              //     day: "2-digit",
-              //     month: "long",
-              //     year: "numeric",
-              //   })}
-              //   method={transaction.method}
-              //   amount={transaction.amount}
-              //   transactionId={transaction.transactionId}
-              //   depositBy={transaction.depositBy}
-              // />
-              ""
+              <HistoryCardList
+                key={idx}
+                transactionType={transaction.transactionType}
+                month={new Date(transaction.month).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
+                transactionDate={new Date(
+                  transaction.transactionDate,
+                ).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+                method={transaction.method}
+                amount={transaction.amount}
+                newBalance={transaction.newBalance}
+              />
             );
           })}
         </div>

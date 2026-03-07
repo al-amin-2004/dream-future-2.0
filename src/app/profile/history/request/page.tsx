@@ -7,6 +7,7 @@ import PageTitle from "@/app/_components/ui/PageTitle";
 import { IRequest } from "@/types";
 import { Button } from "@/app/_components/ui/Button";
 import { useAccounts } from "@/providers/AccountContext";
+import { cn } from "@/lib/utils";
 
 /* ================= PAGE ================= */
 const AdminRequestsPage = () => {
@@ -90,7 +91,29 @@ const AdminRequestsPage = () => {
                       : "N/A"}
                   </td>
                   <td>৳ {historie.amount}</td>
-                  <td>{historie.method}</td>
+                  <td>
+                    <div className="flex justify-center">
+                      <p
+                        className={cn(
+                          "p-1 w-18 rounded-full bg-white/15",
+                          {
+                            "text-pink-400 bg-pink-400/15":
+                              historie.method === "bkash",
+                          },
+                          {
+                            "text-orange-400 bg-orange-400/15":
+                              historie.method === "nagad",
+                          },
+                          {
+                            "text-purple-500 bg-purple-400/15":
+                              historie.method === "rocket",
+                          },
+                        )}
+                      >
+                        {historie.method?.toUpperCase()}
+                      </p>
+                    </div>
+                  </td>
                   <td colSpan={2}>{historie.transactionId}</td>
                   <td>
                     {new Date(historie.createdAt!).toLocaleDateString("en-GB", {

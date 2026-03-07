@@ -12,7 +12,7 @@ export interface TransactionCardProps {
   month: string;
   method: PaymentMethods;
   amount: number;
-  processedBy: string;
+  newBalance?: number;
 }
 
 const HistoryCardGrid: FC<TransactionCardProps> = ({
@@ -21,7 +21,7 @@ const HistoryCardGrid: FC<TransactionCardProps> = ({
   month,
   method,
   amount,
-  processedBy,
+  newBalance,
 }) => {
   return (
     <div className={cn("w-full rounded-xl p-4 max-w-100 bg-slate-300/10")}>
@@ -40,8 +40,10 @@ const HistoryCardGrid: FC<TransactionCardProps> = ({
           <p>Month: {month}</p>
           <p>Amount: {amount}</p>
         </div>
-        <p>Method: {method}</p>
-        <p>Deposit by: {processedBy}</p>
+        <div className="flex justify-between mb-1">
+          <p className="capitalize">Method: {method}</p>
+          <p>New Balance: {newBalance}</p>
+        </div>
       </div>
     </div>
   );
@@ -53,24 +55,25 @@ const HistoryCardList: FC<TransactionCardProps> = ({
   method,
   amount,
   transactionDate,
-  processedBy,
+  newBalance,
 }) => {
   return (
-    <div
-      className={cn(
-        "w-full rounded-md p-4 min-w-87.5 bg-slate-300/10 grid grid-cols-6 place-items-center text-sm",
-      )}
-    >
-      <h2>{transactionType}</h2>
-      <p>{month}</p>
-      <div className="flex items-center gap-1.5">
-        <CalendarFold size={16} />
-        <p>{transactionDate}</p>
+    <>
+      <div
+        className={cn(
+          "w-full rounded-md p-4 min-w-87.5 bg-slate-300/10 grid grid-cols-6 place-items-center text-sm",
+        )}
+      >
+        <h2 className="capitalize">{transactionType}</h2>
+        <p>{month}</p>
+        <div className="flex items-center gap-1.5">
+          <p>{transactionDate}</p>
+        </div>
+        <p className="capitalize">{method}</p>
+        <p>{amount}</p>
+        <p>{newBalance}</p>
       </div>
-      <p>{method}</p>
-      <p>{amount}</p>
-      <p>{processedBy}</p>
-    </div>
+    </>
   );
 };
 
