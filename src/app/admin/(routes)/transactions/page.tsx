@@ -40,8 +40,8 @@ const Transactions = () => {
               <th>Account Name</th>
               <th>Amount</th>
               <th>Method</th>
-              <th>Transaction ID</th>
-              <th>Month</th>
+              <th>Processed By</th>
+              <th>Transaction Type</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -88,7 +88,7 @@ const Transactions = () => {
                   <td>
                     {userMap[transaction.processedBy.toString()].firstName}
                   </td>
-                  <td>{transaction.month}</td>
+                  <td className="capitalize">{transaction.transactionType}</td>
                   <td className="flex justify-center gap-1.5 py-1.5">
                     <ActionBtn
                       icon={<Eye />}
