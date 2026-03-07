@@ -17,7 +17,7 @@ const ProfilePageTitle: FC<ProfilePageTitleProps> = ({
   return (
     <div
       className={cn(
-        "text-3xl md:text-4xl py-2.5 md:py-3.5 border-b-2 border-dashed flex justify-between items-center",
+        "text-3xl md:text-4xl py-2.5 md:py-3.5 border-b-2 border-dashed flex flex-col md:flex-row justify-between md:items-center",
         className,
       )}
     >
