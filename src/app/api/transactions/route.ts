@@ -27,9 +27,9 @@ export async function GET() {
       );
     }
 
-    const accounts = await TransactionModel.find().lean();
+    const transactions = await TransactionModel.find().lean();
 
-    return Response.json({ ok: true, accounts });
+    return Response.json({ ok: true, transactions });
   } catch (error) {
     console.error(error);
     return Response.json(
