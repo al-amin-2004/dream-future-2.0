@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
 import { Button } from "@/app/_components/ui/Button";
+import ProfilePageTitle from "@/app/_components/ui/PageTitle";
+import { useAccounts } from "@/providers/AccountContext";
 // import { ChartAreaInteractive } from "../_components/Graph";
+import {
+  HistoryCardGrid,
+  TransactionCardProps,
+} from "../_components/ui/HistoryCard";
 import {
   ArrowDownUp,
   ArrowRight,
@@ -13,26 +18,31 @@ import {
   List,
 } from "lucide-react";
 
-import ProfilePageTitle from "@/app/_components/ui/PageTitle";
-import { HistoryCardGrid, HistoryCardList, HistoryCardProps } from "../_components/ui/HistoryCard";
-
 const History = () => {
+  const { activeAccount } = useAccounts();
   const [isGrid, setIsGrid] = useState<boolean>(true);
-  const [deposits, setDeposits] = useState<HistoryCardProps[]>([]);
+  const [transactions, setTransactions] = useState<TransactionCardProps[]>([]);
 
   useEffect(() => {
-    try {
-      const fetchHistories = async () => {
-        const res = await fetch("/api/users/deposits");
-        const data = await res.json();
-        if (data.ok) setDeposits(data.histories);
-      };
+    const activeAccId = activeAccount?._id;
 
-      fetchHistories();
-    } catch (error) {
-      console.error("Api error", error);
-    }
-  }, []);
+    if (!activeAccId) return;
+
+    const fetchHistories = async () => {
+      try {
+        const res = await fetch(
+          `/api/transactions/me?accountId=${activeAccId}`,
+        );
+        const data = await res.json();
+
+        if (data.ok) setTransactions(data.histories);
+      } catch (error) {
+        console.error("Api error", error);
+      }
+    };
+
+    fetchHistories();
+  }, [activeAccount]);
 
   return (
     <div className="space-y-12">
@@ -110,49 +120,47 @@ const History = () => {
             <p>Transition ID / Deposit by</p>
           </div>
 
-          {deposits.map((deposit, idx) => {
+          {transactions.map((transaction, idx) => {
             return isGrid ? (
               <HistoryCardGrid
                 key={idx}
-                transactionType="Deposit"
-                month={new Date(deposit.month).toLocaleDateString("en-US", {
+                transactionType={transaction.transactionType}
+                month={new Date(transaction.month).toLocaleDateString("en-US", {
                   month: "long",
                   year: "numeric",
                 })}
-                depositDate={new Date(deposit.depositDate).toLocaleDateString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-                method={deposit.method}
-                amount={deposit.amount}
-                transactionId={deposit.transactionId}
-                depositBy={deposit.depositBy}
+                transactionDate={new Date(
+                  transaction.transactionDate,
+                ).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+                method={transaction.method}
+                amount={transaction.amount}
+                processedBy={transaction.processedBy.firstName}
               />
             ) : (
-              <HistoryCardList
-                key={idx}
-                transactionType="Deposit"
-                month={new Date(deposit.month).toLocaleDateString("en-US", {
-                  month: "long",
-                  year: "numeric",
-                })}
-                depositDate={new Date(deposit.depositDate).toLocaleDateString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-                method={deposit.method}
-                amount={deposit.amount}
-                transactionId={deposit.transactionId}
-                depositBy={deposit.depositBy}
-              />
+              // <HistoryCardList
+              //   key={idx}
+              //   transactionType="Deposit"
+              //   month={new Date(transaction.month).toLocaleDateString("en-US", {
+              //     month: "long",
+              //     year: "numeric",
+              //   })}
+              //   depositDate={new Date(
+              //     transaction.depositDate,
+              //   ).toLocaleDateString("en-GB", {
+              //     day: "2-digit",
+              //     month: "long",
+              //     year: "numeric",
+              //   })}
+              //   method={transaction.method}
+              //   amount={transaction.amount}
+              //   transactionId={transaction.transactionId}
+              //   depositBy={transaction.depositBy}
+              // />
+              ""
             );
           })}
         </div>
