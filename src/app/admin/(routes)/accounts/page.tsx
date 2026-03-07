@@ -4,9 +4,8 @@ import { useMemo, useState } from "react";
 import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import { useAllAccounts } from "@/providers/AllAccountsContext";
 import Input from "@/app/_components/ui/Input";
-import { Eye, Shield, ShieldCheck, ShieldX } from "lucide-react";
+import { Eye, ShieldCheck, ShieldX } from "lucide-react";
 import { Status } from "@/types";
-import { role } from "@/constants/user";
 import { accStatus } from "@/constants/account";
 import {
   Select,

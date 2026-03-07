@@ -73,7 +73,7 @@ const DepositRequestForm = ({ open, setOpen }: DepositRequestFormProps) => {
 
       if (!res.ok) {
         console.log(data.message);
-        throw new Error(data.message || "Failed to deposit request");
+        return toast.error(data.message || "Failed to deposit request");
       }
 
       toast.success("Deposit request submitted!");
