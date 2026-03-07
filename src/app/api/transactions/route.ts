@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
-import AccountModel from "@/models/Account";
 import { cookies } from "next/headers";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import TransactionModel from "@/models/Transaction";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -27,13 +27,13 @@ export async function GET() {
       );
     }
 
-    const accounts = await AccountModel.find().lean();
+    const accounts = await TransactionModel.find().lean();
 
     return Response.json({ ok: true, accounts });
   } catch (error) {
-    console.error("account api route error", error);
+    console.error(error);
     return Response.json(
-      { ok: false, message: "Server error" },
+      { ok: false, message: "Server errorr" },
       { status: 500 },
     );
   }
