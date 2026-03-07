@@ -1,7 +1,7 @@
 import { accStatus } from "@/constants/account";
 import { ObjectId } from "mongoose";
 
-type Status = (typeof accStatus)[number];
+export type Status = (typeof accStatus)[number];
 
 export interface IAccount {
   _id?: string;

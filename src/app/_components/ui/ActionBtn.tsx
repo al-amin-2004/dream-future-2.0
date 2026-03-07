@@ -15,7 +15,7 @@ const ActionBtn: FC<ActionBtnProps> = ({ icon, onClick, danger, success }) => {
       className={cn(
         "p-2 rounded-md hover:bg-muted transition cursor-pointer",
         danger && "text-red-500 hover:bg-red-500/10",
-        success && "text-green-500 hover:bg-green-500/10"
+        success && "text-green-500 hover:bg-green-500/10",
       )}
     >
       {icon}
