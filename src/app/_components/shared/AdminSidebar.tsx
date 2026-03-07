@@ -27,14 +27,14 @@ const sidebarItems = [
   { label: "Members", icon: <Users />, link: "/admin/members" },
   { label: "Accounts", icon: <Wallet />, link: "/admin/accounts" },
   {
-    label: "Transactions",
-    icon: <ArrowLeftRight />,
-    link: "/admin/transactions",
-  },
-  {
     label: "Pending Requests",
     icon: <ClockArrowUp />,
     link: "/admin/requests",
+  },
+  {
+    label: "Transactions",
+    icon: <ArrowLeftRight />,
+    link: "/admin/transactions",
   },
   { label: "Announcements", icon: <Megaphone />, link: "/admin/announcements" },
   { label: "Leaderboard", icon: <LeaderBoard />, link: "/admin/leaderboard" },

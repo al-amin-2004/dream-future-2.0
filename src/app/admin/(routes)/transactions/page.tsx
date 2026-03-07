@@ -200,7 +200,7 @@ const Transactions = () => {
                   }
                 />
                 <DialogInfoRow
-                  label="Account"
+                  label="Account No"
                   value={
                     accountMap[selectedTransaction.accountId.toString()]
                       ?.accNumber
@@ -242,15 +242,22 @@ const Transactions = () => {
                     selectedTransaction.requestDate
                       ? new Date(
                           selectedTransaction.requestDate,
-                        ).toLocaleDateString("en-BD", {
-                          month: "long",
-                          year: "numeric",
+                        ).toLocaleString("en-BD", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
                         })
                       : "N/A"
                   }
                 />
               </div>
             </div>
+
+            {selectedTransaction.profitSource && (
+              <DialogInfoRow
+                label="Profit Source"
+                value={selectedTransaction.profitSource}
+              />
+            )}
 
             <DialogFooter>
               <Button onClick={() => setSelectedTransaction(null)}>
