@@ -7,8 +7,9 @@
 // 6. Account ownership check
 // 7. Account status check
 // 8. Deposit duplicate month check
-// 9. Withdraw balance check
-// 10. Create Request
+// 9. Duplicate transaction check
+// 10. Withdraw balance check
+// 11. Create Request
 
 import { paymentMethods, requestTypes } from "@/constants/request";
 import dbConnect from "@/lib/dbConnect";
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
         {
           success: false,
           message:
-            "accountId, amount, month, method and transactionId are required.",
+            "accountId, amount, month, method, requestType and transactionId are required.",
         },
         { status: 400 },
       );
@@ -104,6 +105,18 @@ export async function POST(request: Request) {
         return Response.json(
           { message: "Deposit already requested for this month" },
           { status: 400 },
+        );
+      }
+
+      // Transaction duplicate check
+      const existingTransaction = await RequestModel.findOne({
+        transactionId,
+      });
+
+      if (existingTransaction) {
+        return Response.json(
+          { message: "This transaction ID has already been used" },
+          { status: 409 },
         );
       }
     }
