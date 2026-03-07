@@ -64,10 +64,12 @@ export async function PATCH(req: Request) {
         amount: requestData.amount,
         method: requestData.method,
         month: requestData.month,
+        transactionId: requestData.transactionId,
         newBalance: updatedAccount?.balance,
         transactionType: requestData.requestType,
         processedBy: requestData.processedBy,
         transactionDate: new Date(),
+        requestDate: requestData.createdAt,
       });
     }
 

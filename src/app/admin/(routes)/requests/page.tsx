@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import ActionBtn from "@/app/_components/ui/ActionBtn";
-import ProfilePageTitle from "@/app/_components/ui/PageTitle";
+import { ObjectId } from "mongoose";
 import { cn } from "@/lib/utils";
+import ActionBtn from "@/app/_components/ui/ActionBtn";
+import { Button } from "@/app/_components/ui/Button";
+import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import { useAllAccounts } from "@/providers/AllAccountsContext";
 import { useAllRequests } from "@/providers/AllRequestsContext";
 import { useAllUsers } from "@/providers/AllUsersContext";
 import { IRequest } from "@/types";
-import { Check, Eye, X } from "lucide-react";
-import { ObjectId } from "mongoose";
 import { toast } from "sonner";
+import { Check, Eye, X } from "lucide-react";
+import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
 import {
   Dialog,
   DialogContent,
@@ -19,8 +21,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
-import { Button } from "@/app/_components/ui/Button";
 
 const Transactions = () => {
   const { allRequests, refreshRequests } = useAllRequests();
@@ -270,7 +270,7 @@ const Transactions = () => {
                   }
                 />
                 <DialogInfoRow
-                  label="Account"
+                  label="Account No"
                   value={
                     accountMap[selectedRequest.accountId.toString()]?.accNumber
                   }

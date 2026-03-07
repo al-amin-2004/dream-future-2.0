@@ -12,7 +12,9 @@ export interface ITransaction {
   amount: number;
   method?: PaymentMethods;
   month?: string;
+  transactionId?: string;
   transactionDate: Date;
+  requestDate: Date;
   newBalance: number;
   profitSource?: string;
   processedBy: ObjectId | string;

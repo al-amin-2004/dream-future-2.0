@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/providers/SidebarContext";
+import { useAllRequests } from "@/providers/AllRequestsContext";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Exit, LeaderBoard, LeftArrowIcon } from "@/icons";
 import {
@@ -26,14 +27,14 @@ const sidebarItems = [
   { label: "Members", icon: <Users />, link: "/admin/members" },
   { label: "Accounts", icon: <Wallet />, link: "/admin/accounts" },
   {
-    label: "Transactions",
-    icon: <ArrowLeftRight />,
-    link: "/admin/transactions",
-  },
-  {
     label: "Pending Requests",
     icon: <ClockArrowUp />,
     link: "/admin/requests",
+  },
+  {
+    label: "Transactions",
+    icon: <ArrowLeftRight />,
+    link: "/admin/transactions",
   },
   { label: "Announcements", icon: <Megaphone />, link: "/admin/announcements" },
   { label: "Leaderboard", icon: <LeaderBoard />, link: "/admin/leaderboard" },
@@ -52,8 +53,11 @@ const sidebarItems2 = [
 
 const AdminSidebar: FC = () => {
   const pathname = usePathname();
+  const { allRequests } = useAllRequests();
   const { open } = useSidebar();
   const [navOpen, setNavOpen] = useState<boolean>(false);
+
+  const pendingRequests = allRequests.filter((r) => r.status === "pending");
   return (
     <>
       <aside
@@ -80,7 +84,7 @@ const AdminSidebar: FC = () => {
                   <Link
                     href={item.link}
                     className={cn(
-                      "flex items-center gap-2 rounded text-nowrap cursor-pointer",
+                      "relative flex items-center gap-2 rounded text-nowrap cursor-pointer",
                       { "hover:bg-slate-400/20": open && !navActive },
                       { "bg-primary": open && navActive },
                     )}
@@ -95,6 +99,18 @@ const AdminSidebar: FC = () => {
                       {item.icon}
                     </div>
                     <p>{open && item.label}</p>
+
+                    {pendingRequests.length > 0 &&
+                      item.label === "Pending Requests" && (
+                        <div
+                          className={cn(
+                            " bg-red-600 size-5.5 text-sm flex justify-center items-center rounded-full z-20",
+                            { "absolute -right-4 -top-2": !open },
+                          )}
+                        >
+                          {pendingRequests.length}
+                        </div>
+                      )}
                   </Link>
                 </li>
               );
