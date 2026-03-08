@@ -13,13 +13,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Role } from "@/types";
+import { IUser, Role } from "@/types";
 import { role } from "@/constants/user";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Button } from "@/app/_components/ui/Button";
 
 const Members = () => {
   const { allUsers } = useAllUsers();
   const [search, setSearch] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<"all" | Role>("all");
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
   const filteredUsers = useMemo(() => {
     return allUsers.filter((user) => {
@@ -136,7 +153,7 @@ const Members = () => {
                 <td title="See all info!" className="flex justify-center">
                   <Eye
                     className="cursor-pointer"
-                    onClick={() => alert("add user details info!")}
+                    onClick={() => setSelectedUser(user)}
                   />
                 </td>
               </tr>
@@ -144,6 +161,83 @@ const Members = () => {
           </tbody>
         </table>
       </div>
+      <Dialog open={!!selectedUser} onOpenChange={() => setSelectedUser(null)}>
+        <DialogContent className="min-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Member info</DialogTitle>
+            <DialogDescription className="border-b pb-3">
+              Check member info for manage.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedUser && (
+            <>
+              <HoverCard openDelay={10} closeDelay={5000}>
+                <HoverCardTrigger asChild>
+                  <Image
+                    src={selectedUser.avatar ? selectedUser.avatar : ""}
+                    width={200}
+                    height={200}
+                    className="size-15 rounded-full cursor-pointer"
+                    alt="Profile Picture"
+                  />
+                </HoverCardTrigger>
+                <HoverCardContent side="right">
+                  <Image
+                    src={selectedUser.avatar ? selectedUser.avatar : ""}
+                    width={500}
+                    height={500}
+                    className="min-size-100"
+                    alt="Profile Picture"
+                  />
+                </HoverCardContent>
+              </HoverCard>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="space-y-1">
+                  <DialogInfoRow
+                    label="Name"
+                    value={`${selectedUser.firstName} ${selectedUser?.lastName}`}
+                  />
+                  <DialogInfoRow
+                    label="Username"
+                    value={selectedUser.username}
+                  />
+                  <DialogInfoRow label="Email" value={selectedUser.email} />
+                  <DialogInfoRow label="Number" value={selectedUser?.number} />
+                </div>
+                <div className="space-y-1">
+                  <DialogInfoRow
+                    label="Birthday"
+                    value={
+                      selectedUser.dob
+                        ? new Date(selectedUser.dob).toLocaleDateString(
+                            "en-BD",
+                            {
+                              day: "2-digit",
+                              month: "long",
+                              year: "numeric",
+                            },
+                          )
+                        : "N/A"
+                    }
+                  />
+                  <DialogInfoRow label="Gender" value={selectedUser.gender} />
+                  <DialogInfoRow
+                    label="Nationality"
+                    value={selectedUser.nationality}
+                  />
+                  <DialogInfoRow label="Role" value={selectedUser.role} />
+                </div>
+                <DialogInfoRow label="Address" value={selectedUser?.address} />
+              </div>
+            </>
+          )}
+          <DialogFooter>
+            <DialogClose>
+              <Button onClick={() => setSelectedUser(null)}>Close</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
