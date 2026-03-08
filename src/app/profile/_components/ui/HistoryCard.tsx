@@ -1,36 +1,37 @@
 import { FC } from "react";
 import { cn } from "@/lib/utils";
 import { CalendarFold } from "lucide-react";
+import { paymentMethods, requestTypes } from "@/constants/request";
 
-type transactionTypes = "Deposit" | "Withdraw" | "Loan";
-type methods = "Cash" | "Bkash" | "Nagad" | "Rocket";
+type TransactionTypes = (typeof requestTypes)[number];
+type PaymentMethods = (typeof paymentMethods)[number];
 
-export interface HistoryCardProps {
-  transactionType: transactionTypes;
+export interface TransactionCardProps {
+  transactionType: TransactionTypes;
+  transactionDate: string;
   month: string;
-  method: methods;
+  method: PaymentMethods;
   amount: number;
-  depositDate: string;
-  transactionId?: string;
-  depositBy?: string;
+  newBalance?: number;
 }
 
-const HistoryCardGrid: FC<HistoryCardProps> = ({
+const HistoryCardGrid: FC<TransactionCardProps> = ({
   transactionType,
+  transactionDate,
   month,
   method,
   amount,
-  transactionId,
-  depositDate,
-  depositBy,
+  newBalance,
 }) => {
   return (
     <div className={cn("w-full rounded-xl p-4 max-w-100 bg-slate-300/10")}>
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-2xl font-medium leading-6">{transactionType}</h2>
+        <h2 className="text-2xl font-medium leading-6 capitalize">
+          {transactionType}
+        </h2>
         <div className="flex items-center gap-1.5">
           <CalendarFold size={16} />
-          <p className="text-xs">{depositDate}</p>
+          <p className="text-xs">{transactionDate}</p>
         </div>
       </div>
 
@@ -39,44 +40,40 @@ const HistoryCardGrid: FC<HistoryCardProps> = ({
           <p>Month: {month}</p>
           <p>Amount: {amount}</p>
         </div>
-
-        <p>Method: {method}</p>
-
-        {method === "Cash" ? (
-          <p>Deposit by: {depositBy}</p>
-        ) : (
-          <p>Transition ID: {transactionId}</p>
-        )}
+        <div className="flex justify-between mb-1">
+          <p className="capitalize">Method: {method}</p>
+          <p>New Balance: {newBalance}</p>
+        </div>
       </div>
     </div>
   );
 };
 
-const HistoryCardList: FC<HistoryCardProps> = ({
+const HistoryCardList: FC<TransactionCardProps> = ({
   transactionType,
   month,
   method,
   amount,
-  transactionId,
-  depositDate,
-  depositBy,
+  transactionDate,
+  newBalance,
 }) => {
   return (
-    <div
-      className={cn(
-        "w-full rounded-md p-4 min-w-87.5 bg-slate-300/10 grid grid-cols-6 place-items-center text-sm"
-      )}
-    >
-      <h2>{transactionType}</h2>
-      <p>{month}</p>
-      <div className="flex items-center gap-1.5">
-        <CalendarFold size={16} />
-        <p>{depositDate}</p>
+    <>
+      <div
+        className={cn(
+          "w-full rounded-md p-4 min-w-87.5 bg-slate-300/10 grid grid-cols-6 place-items-center text-sm",
+        )}
+      >
+        <h2 className="capitalize">{transactionType}</h2>
+        <p>{month}</p>
+        <div className="flex items-center gap-1.5">
+          <p>{transactionDate}</p>
+        </div>
+        <p className="capitalize">{method}</p>
+        <p>{amount}</p>
+        <p>{newBalance}</p>
       </div>
-      <p>{method}</p>
-      <p>{amount}</p>
-      <p>{method === "Cash" ? depositBy : transactionId}</p>
-    </div>
+    </>
   );
 };
 

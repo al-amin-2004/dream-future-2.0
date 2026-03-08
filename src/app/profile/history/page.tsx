@@ -2,9 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
 import { Button } from "@/app/_components/ui/Button";
+import ProfilePageTitle from "@/app/_components/ui/PageTitle";
+import { useAccounts } from "@/providers/AccountContext";
 // import { ChartAreaInteractive } from "../_components/Graph";
+import {
+  HistoryCardGrid,
+  HistoryCardList,
+  TransactionCardProps,
+} from "../_components/ui/HistoryCard";
 import {
   ArrowDownUp,
   ArrowRight,
@@ -13,26 +19,31 @@ import {
   List,
 } from "lucide-react";
 
-import ProfilePageTitle from "@/app/_components/ui/PageTitle";
-import { HistoryCardGrid, HistoryCardList, HistoryCardProps } from "../_components/ui/HistoryCard";
-
 const History = () => {
+  const { activeAccount } = useAccounts();
   const [isGrid, setIsGrid] = useState<boolean>(true);
-  const [deposits, setDeposits] = useState<HistoryCardProps[]>([]);
+  const [transactions, setTransactions] = useState<TransactionCardProps[]>([]);
 
   useEffect(() => {
-    try {
-      const fetchHistories = async () => {
-        const res = await fetch("/api/users/deposits");
-        const data = await res.json();
-        if (data.ok) setDeposits(data.histories);
-      };
+    const activeAccId = activeAccount?._id;
 
-      fetchHistories();
-    } catch (error) {
-      console.error("Api error", error);
-    }
-  }, []);
+    if (!activeAccId) return;
+
+    const fetchHistories = async () => {
+      try {
+        const res = await fetch(
+          `/api/transactions/me?accountId=${activeAccId}`,
+        );
+        const data = await res.json();
+
+        if (data.ok) setTransactions(data.histories);
+      } catch (error) {
+        console.error("Api error", error);
+      }
+    };
+
+    fetchHistories();
+  }, [activeAccount]);
 
   return (
     <div className="space-y-12">
@@ -79,13 +90,13 @@ const History = () => {
               }`}
               onClick={() => setIsGrid(false)}
             />
-            <div className="cursor-pointer flex items-center gap-2 border px-2.5 py-1 rounded-md">
+            <div className="cursor-not-allowed flex items-center gap-2 border px-2.5 py-1 rounded-md">
               <ArrowDownUp size={18} />
-              <span className="inline">Sort</span>
+              <span>Sort</span>
             </div>
-            <div className="cursor-pointer flex items-center gap-2 border px-2.5 py-1 rounded-md">
+            <div className="cursor-not-allowed flex items-center gap-2 border px-2.5 py-1 rounded-md">
               <Funnel size={18} />
-              <span className="inline">Filter</span>
+              <span>Filter</span>
             </div>
           </div>
         </div>
@@ -98,60 +109,53 @@ const History = () => {
           }`}
         >
           <div
-            className={`w-full rounded-md p-4 min-w-87.5 bg-background grid grid-cols-6 place-items-center font-medium border border-emerald-600 sticky top-0 ${
-              isGrid && "hidden"
-            }`}
+            className={`w-full rounded-md p-4 min-w-87.5 bg-background grid grid-cols-6 place-items-center font-medium border border-primary sticky top-0} ${isGrid && "hidden"}`}
           >
             <p>Transaction Type</p>
             <p>Month</p>
             <p>Date</p>
             <p>Method</p>
             <p>Amount</p>
-            <p>Transition ID / Deposit by</p>
+            <p>New Balance</p>
           </div>
-
-          {deposits.map((deposit, idx) => {
+          {transactions.map((transaction, idx) => {
             return isGrid ? (
               <HistoryCardGrid
                 key={idx}
-                transactionType="Deposit"
-                month={new Date(deposit.month).toLocaleDateString("en-US", {
+                transactionType={transaction.transactionType}
+                month={new Date(transaction.month).toLocaleDateString("en-US", {
                   month: "long",
                   year: "numeric",
                 })}
-                depositDate={new Date(deposit.depositDate).toLocaleDateString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-                method={deposit.method}
-                amount={deposit.amount}
-                transactionId={deposit.transactionId}
-                depositBy={deposit.depositBy}
+                transactionDate={new Date(
+                  transaction.transactionDate,
+                ).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+                method={transaction.method}
+                amount={transaction.amount}
+                newBalance={transaction.newBalance}
               />
             ) : (
               <HistoryCardList
                 key={idx}
-                transactionType="Deposit"
-                month={new Date(deposit.month).toLocaleDateString("en-US", {
+                transactionType={transaction.transactionType}
+                month={new Date(transaction.month).toLocaleDateString("en-US", {
                   month: "long",
                   year: "numeric",
                 })}
-                depositDate={new Date(deposit.depositDate).toLocaleDateString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-                method={deposit.method}
-                amount={deposit.amount}
-                transactionId={deposit.transactionId}
-                depositBy={deposit.depositBy}
+                transactionDate={new Date(
+                  transaction.transactionDate,
+                ).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+                method={transaction.method}
+                amount={transaction.amount}
+                newBalance={transaction.newBalance}
               />
             );
           })}

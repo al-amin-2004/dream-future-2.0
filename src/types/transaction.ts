@@ -7,7 +7,7 @@ type PaymentMethods = (typeof paymentMethods)[number];
 export interface ITransaction {
   _id?: string;
   accountId: ObjectId | string;
-  requestId: ObjectId | string;
+  requestId?: ObjectId | string;
   transactionType: RequestTypes;
   amount: number;
   method?: PaymentMethods;

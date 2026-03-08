@@ -5,12 +5,12 @@ import mongoose, { Schema } from "mongoose";
 const transactionSchema = new Schema<ITransaction>(
   {
     accountId: { type: Schema.Types.ObjectId, ref: "Account", required: true },
-    requestId: { type: Schema.Types.ObjectId, ref: "Request", required: true },
+    requestId: { type: Schema.Types.ObjectId, ref: "Request" },
     transactionType: { type: String, enum: requestTypes, required: true },
     month: { type: String },
     amount: { type: Number, required: true, min: 1 },
     method: { type: String, enum: paymentMethods },
-    transactionId: { type: String, unique: true },
+    transactionId: { type: String, unique: true, sparse: true },
     transactionDate: { type: Date, default: Date.now },
     requestDate: { type: Date },
     newBalance: { type: Number, required: true },

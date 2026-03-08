@@ -3,15 +3,16 @@
 import { useState } from "react";
 import { ObjectId } from "mongoose";
 import { cn } from "@/lib/utils";
-import ActionBtn from "@/app/_components/ui/ActionBtn";
+import { createMapById } from "@/helpers/createMapById";
 import { Button } from "@/app/_components/ui/Button";
-import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import { useAllAccounts } from "@/providers/AllAccountsContext";
 import { useAllRequests } from "@/providers/AllRequestsContext";
 import { useAllUsers } from "@/providers/AllUsersContext";
 import { IRequest } from "@/types";
 import { toast } from "sonner";
 import { Check, Eye, X } from "lucide-react";
+import ActionBtn from "@/app/_components/ui/ActionBtn";
+import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
 import {
   Dialog,
@@ -27,6 +28,8 @@ const Transactions = () => {
   const { allUsers } = useAllUsers();
   const { allAccounts } = useAllAccounts();
   const [selectedRequest, setSelectedRequest] = useState<IRequest | null>(null);
+  const userMap = createMapById(allUsers);
+  const accountMap = createMapById(allAccounts);
 
   if (!allUsers.length || !allAccounts.length || !allRequests.length) {
     return (
@@ -43,14 +46,6 @@ const Transactions = () => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
-
-  const userMap = Object.fromEntries(
-    allUsers.map((u) => [u._id?.toString(), u]),
-  );
-
-  const accountMap = Object.fromEntries(
-    allAccounts.map((a) => [a._id?.toString(), a]),
-  );
 
   const handleApprove = async (id: string | ObjectId | undefined) => {
     if (id === undefined) return toast.error("Request id Undefiend");
@@ -224,12 +219,16 @@ const Transactions = () => {
                   label="Name"
                   value={`${
                     userMap[
-                      accountMap[selectedRequest.accountId.toString()].userId
+                      accountMap[
+                        selectedRequest.accountId.toString()
+                      ].userId.toString()
                     ]?.firstName
                   }
                     ${
                       userMap[
-                        accountMap[selectedRequest.accountId.toString()].userId
+                        accountMap[
+                          selectedRequest.accountId.toString()
+                        ].userId.toString()
                       ]?.lastName
                     }`}
                 />
@@ -237,7 +236,9 @@ const Transactions = () => {
                   label="Username"
                   value={
                     userMap[
-                      accountMap[selectedRequest.accountId.toString()].userId
+                      accountMap[
+                        selectedRequest.accountId.toString()
+                      ].userId.toString()
                     ]?.username
                   }
                 />
@@ -246,19 +247,25 @@ const Transactions = () => {
                   label="Email"
                   value={
                     userMap[
-                      accountMap[selectedRequest.accountId.toString()].userId
+                      accountMap[
+                        selectedRequest.accountId.toString()
+                      ].userId.toString()
                     ]?.email
                   }
                 />
                 {userMap[
-                  accountMap[selectedRequest.accountId.toString()].userId
+                  accountMap[
+                    selectedRequest.accountId.toString()
+                  ].userId.toString()
                 ]?.number && (
                   <DialogInfoRow
                     className="truncate"
                     label="Phone"
                     value={
                       userMap[
-                        accountMap[selectedRequest.accountId.toString()].userId
+                        accountMap[
+                          selectedRequest.accountId.toString()
+                        ].userId.toString()
                       ]?.number
                     }
                   />

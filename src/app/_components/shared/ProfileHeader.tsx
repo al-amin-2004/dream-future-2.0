@@ -171,7 +171,7 @@ const ProfileHeader: FC = () => {
 
             {user?.role === "admin" && (
               <div>
-                <Link href="admin/">
+                <Link href="/admin">
                   <DropdownMenuItem className="cursor-pointer">
                     Admin Panel
                   </DropdownMenuItem>
