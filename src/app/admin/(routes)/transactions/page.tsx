@@ -251,6 +251,13 @@ const Transactions = () => {
                       : "N/A"
                   }
                 />
+                <DialogInfoRow
+                  label="Processed By"
+                  value={`
+                    ${userMap[selectedTransaction.processedBy.toString()].firstName}
+                    (${userMap[selectedTransaction.processedBy.toString()].role})
+                  `}
+                />
               </div>
             </div>
 
