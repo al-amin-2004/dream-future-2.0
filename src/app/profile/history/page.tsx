@@ -90,13 +90,13 @@ const History = () => {
               }`}
               onClick={() => setIsGrid(false)}
             />
-            <div className="cursor-pointer flex items-center gap-2 border px-2.5 py-1 rounded-md">
+            <div className="cursor-not-allowed flex items-center gap-2 border px-2.5 py-1 rounded-md">
               <ArrowDownUp size={18} />
-              <span className="inline">Sort</span>
+              <span>Sort</span>
             </div>
-            <div className="cursor-pointer flex items-center gap-2 border px-2.5 py-1 rounded-md">
+            <div className="cursor-not-allowed flex items-center gap-2 border px-2.5 py-1 rounded-md">
               <Funnel size={18} />
-              <span className="inline">Filter</span>
+              <span>Filter</span>
             </div>
           </div>
         </div>
