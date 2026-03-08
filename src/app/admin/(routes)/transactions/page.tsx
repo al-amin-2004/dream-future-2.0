@@ -1,9 +1,17 @@
 "use client";
 
-import ActionBtn from "@/app/_components/ui/ActionBtn";
+import { useState } from "react";
+import { useAllAccounts } from "@/providers/AllAccountsContext";
+import { useAllTransactions } from "@/providers/AllTransactionsContext";
+import { useAllUsers } from "@/providers/AllUsersContext";
+import { ITransaction } from "@/types";
+import { createMapById } from "@/helpers/createMapById";
+import { cn } from "@/lib/utils";
+import { Eye } from "lucide-react";
 import { Button } from "@/app/_components/ui/Button";
-import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
 import ProfilePageTitle from "@/app/_components/ui/PageTitle";
+import ActionBtn from "@/app/_components/ui/ActionBtn";
+import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
 import {
   Dialog,
   DialogContent,
@@ -12,13 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
-import { useAllAccounts } from "@/providers/AllAccountsContext";
-import { useAllTransactions } from "@/providers/AllTransactionsContext";
-import { useAllUsers } from "@/providers/AllUsersContext";
-import { ITransaction } from "@/types";
-import { Eye } from "lucide-react";
-import { useState } from "react";
 
 const Transactions = () => {
   const { allTransactions } = useAllTransactions();
@@ -26,14 +27,8 @@ const Transactions = () => {
   const { allAccounts } = useAllAccounts();
   const [selectedTransaction, setSelectedTransaction] =
     useState<ITransaction | null>(null);
-
-  const userMap = Object.fromEntries(
-    allUsers.map((u) => [u._id?.toString(), u]),
-  );
-
-  const accountMap = Object.fromEntries(
-    allAccounts.map((a) => [a._id?.toString(), a]),
-  );
+  const userMap = createMapById(allUsers);
+  const accountMap = createMapById(allAccounts);
 
   return (
     <div className="space-y-8">
@@ -148,14 +143,16 @@ const Transactions = () => {
                   label="Name"
                   value={`${
                     userMap[
-                      accountMap[selectedTransaction.accountId.toString()]
-                        .userId
+                      accountMap[
+                        selectedTransaction.accountId.toString()
+                      ].userId.toString()
                     ]?.firstName
                   }
                     ${
                       userMap[
-                        accountMap[selectedTransaction.accountId.toString()]
-                          .userId
+                        accountMap[
+                          selectedTransaction.accountId.toString()
+                        ].userId.toString()
                       ]?.lastName
                     }`}
                 />
@@ -163,8 +160,9 @@ const Transactions = () => {
                   label="Username"
                   value={
                     userMap[
-                      accountMap[selectedTransaction.accountId.toString()]
-                        .userId
+                      accountMap[
+                        selectedTransaction.accountId.toString()
+                      ].userId.toString()
                     ]?.username
                   }
                 />
@@ -173,21 +171,25 @@ const Transactions = () => {
                   label="Email"
                   value={
                     userMap[
-                      accountMap[selectedTransaction.accountId.toString()]
-                        .userId
+                      accountMap[
+                        selectedTransaction.accountId.toString()
+                      ].userId.toString()
                     ]?.email
                   }
                 />
                 {userMap[
-                  accountMap[selectedTransaction.accountId.toString()].userId
+                  accountMap[
+                    selectedTransaction.accountId.toString()
+                  ].userId.toString()
                 ]?.number && (
                   <DialogInfoRow
                     className="truncate"
                     label="Phone"
                     value={
                       userMap[
-                        accountMap[selectedTransaction.accountId.toString()]
-                          .userId
+                        accountMap[
+                          selectedTransaction.accountId.toString()
+                        ].userId.toString()
                       ]?.number
                     }
                   />
