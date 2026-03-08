@@ -158,7 +158,7 @@ const Profile = () => {
               <UserDetailsList
                 label="Date of Birth"
                 value={
-                  dob instanceof Date
+                  dob
                     ? new Date(dob).toLocaleDateString("en-US", {
                         day: "2-digit",
                         month: "short",
