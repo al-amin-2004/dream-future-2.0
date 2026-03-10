@@ -102,7 +102,11 @@ const Profile = () => {
 
         {/* Top right side */}
         <motion.div variants={fadeUp} className="flex-3 flex flex-col gap-8">
-          {accounts ? (
+          {accounts.length === 0 ? (
+            <div className="border-2 p-3.5 md:p-6 rounded-xl flex justify-end">
+              <FinancialAccCreatepage />
+            </div>
+          ) : (
             <div className="border-2 p-3.5 md:p-6 rounded-xl">
               <div className="flex justify-between py-3 border-b">
                 <h1 className="text-xl font-semibold">Balance quiry</h1>
@@ -148,7 +152,7 @@ const Profile = () => {
                   <h3 className="text-sm text-blue-500">Total Balance</h3>
                   <div
                     className={cn(
-                      "px-1.5 h-9 w-7 rounded-lg bg-amber-700 overflow-hidden transition-all duration-300 cursor-pointer",
+                      "px-1.5 h-9 w-6.5 rounded-lg bg-amber-700 overflow-hidden transition-all duration-300 cursor-pointer",
                       { "w-full": showBalance },
                     )}
                     onClick={handleClick}
@@ -159,10 +163,6 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="border-2 p-3.5 md:p-6 rounded-xl flex justify-end">
-              <FinancialAccCreatepage />
             </div>
           )}
 

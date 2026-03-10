@@ -55,6 +55,7 @@ const SignUp = () => {
 
       if (!res.ok) {
         toast.error(data.message || "Login failed");
+        return;
       }
 
       toast.success(data.message);

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import { useAllUsers } from "@/providers/AllUsersContext";
-import { Eye, Shield } from "lucide-react";
+import { Coins, EllipsisVertical, Shield, User } from "lucide-react";
 import Input from "@/app/_components/ui/Input";
 import {
   Select,
@@ -15,28 +15,23 @@ import {
 } from "@/components/ui/select";
 import { IUser, Role } from "@/types";
 import { role } from "@/constants/user";
+import ViewProfile from "../../_components/memberDialog/ViewProfile";
+import EditProfile from "../../_components/memberDialog/EditProfile";
+import ChangeRole from "../../_components/memberDialog/ChangeRole";
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { Button } from "@/app/_components/ui/Button";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Members = () => {
   const { allUsers } = useAllUsers();
   const [search, setSearch] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<"all" | Role>("all");
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [viewProfile, setViewProfile] = useState<IUser | null>(null);
+  const [editProfile, setEditProfile] = useState<IUser | null>(null);
+  const [changeRole, setChangeRole] = useState<IUser | null>(null);
 
   const filteredUsers = useMemo(() => {
     return allUsers.filter((user) => {
@@ -143,101 +138,59 @@ const Members = () => {
 
                 {/* ROLE */}
                 <td className="hidden md:table-cell">
-                  <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-400">
-                    <Shield className="size-3" />
+                  <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-full bg-blue-500/20 text-blue-400">
+                    {user.role === "admin" && <Shield className="size-4" />}
+                    {user.role === "treasurer" && <Coins className="size-4" />}
+                    {user.role === "member" && <User className="size-4" />}
                     {user.role.toLocaleUpperCase()}
                   </span>
                 </td>
 
                 {/* ACTION */}
-                <td title="See all info!" className="flex justify-center">
-                  <Eye
-                    className="cursor-pointer"
-                    onClick={() => setSelectedUser(user)}
-                  />
+                <td title="Select all actions!">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="p-2 rounded-full hover:bg-muted/40 cursor-pointer">
+                        <EllipsisVertical />
+                      </button>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setViewProfile(user)}>
+                        View Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setEditProfile(user)}>
+                        Edit Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setChangeRole(user)}>
+                        Change Role
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>Delete User</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <Dialog open={!!selectedUser} onOpenChange={() => setSelectedUser(null)}>
-        <DialogContent className="min-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Member info</DialogTitle>
-            <DialogDescription className="border-b pb-3">
-              Check member info for manage.
-            </DialogDescription>
-          </DialogHeader>
-          {selectedUser && (
-            <>
-              <HoverCard openDelay={10} closeDelay={5000}>
-                <HoverCardTrigger asChild>
-                  <Image
-                    src={selectedUser.avatar ? selectedUser.avatar : ""}
-                    width={200}
-                    height={200}
-                    className="size-15 rounded-full cursor-pointer"
-                    alt="Profile Picture"
-                  />
-                </HoverCardTrigger>
-                <HoverCardContent side="right">
-                  <Image
-                    src={selectedUser.avatar ? selectedUser.avatar : ""}
-                    width={500}
-                    height={500}
-                    className="min-size-100"
-                    alt="Profile Picture"
-                  />
-                </HoverCardContent>
-              </HoverCard>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div className="space-y-1">
-                  <DialogInfoRow
-                    label="Name"
-                    value={`${selectedUser.firstName} ${selectedUser?.lastName}`}
-                  />
-                  <DialogInfoRow
-                    label="Username"
-                    value={selectedUser.username}
-                  />
-                  <DialogInfoRow label="Email" value={selectedUser.email} />
-                  <DialogInfoRow label="Number" value={selectedUser?.number} />
-                </div>
-                <div className="space-y-1">
-                  <DialogInfoRow
-                    label="Birthday"
-                    value={
-                      selectedUser.dob
-                        ? new Date(selectedUser.dob).toLocaleDateString(
-                            "en-BD",
-                            {
-                              day: "2-digit",
-                              month: "long",
-                              year: "numeric",
-                            },
-                          )
-                        : "N/A"
-                    }
-                  />
-                  <DialogInfoRow label="Gender" value={selectedUser.gender} />
-                  <DialogInfoRow
-                    label="Nationality"
-                    value={selectedUser.nationality}
-                  />
-                  <DialogInfoRow label="Role" value={selectedUser.role} />
-                </div>
-                <DialogInfoRow label="Address" value={selectedUser?.address} />
-              </div>
-            </>
-          )}
-          <DialogFooter>
-            <DialogClose>
-              <Button onClick={() => setSelectedUser(null)}>Close</Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+
+      {/* ====== All action Dialog components here ====== */}
+      <ViewProfile
+        open={!!viewProfile}
+        onClose={() => setViewProfile(null)}
+        user={viewProfile}
+      />
+      <EditProfile
+        open={!!editProfile}
+        onClose={() => setEditProfile(null)}
+        user={editProfile}
+      />
+      <ChangeRole
+        open={!!changeRole}
+        onClose={() => setChangeRole(null)}
+        user={changeRole}
+      />
     </div>
   );
 };
