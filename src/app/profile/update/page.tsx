@@ -99,7 +99,6 @@ const UpdateProfile = () => {
     } catch (error) {
       console.error("Update Error:", error);
       toast.error("Failed to update Profile!");
-    } finally {
     }
   };
   return (
