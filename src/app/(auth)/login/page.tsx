@@ -70,7 +70,7 @@ const SignUp = () => {
   };
 
   return (
-    <RegistrationCard className="w-full max-w-md  mt-20">
+    <RegistrationCard className="w-full max-w-md mt-20">
       {/* Header */}
       <RegistrationCardHeader>
         <div className="inline-flex items-center justify-center size-16 md:size-12 bg-gray-900 rounded-full mb-4 ring md:ring-0 ring-primary">
@@ -101,7 +101,7 @@ const SignUp = () => {
             />
           </div>
           {errors.email && (
-            <p className="text-red-400 text-xs -mt-1.5">
+            <p className="text-red-400 text-xs">
               {errors.email.message}
             </p>
           )}
@@ -131,7 +131,7 @@ const SignUp = () => {
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-400 text-xs -mt-1.5">
+            <p className="text-red-400 text-xs">
               {errors.password.message}
             </p>
           )}
