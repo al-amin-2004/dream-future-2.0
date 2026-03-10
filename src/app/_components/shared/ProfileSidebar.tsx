@@ -19,7 +19,7 @@ const sidebarItems = [
 ];
 
 const ProfileSidebar: FC = () => {
-  const { accounts } = useAccounts();
+  const { accounts, loading } = useAccounts();
   const pathname = usePathname();
   const { open } = useSidebar();
   const [navOpen, setNavOpen] = useState<boolean>(false);
@@ -43,37 +43,42 @@ const ProfileSidebar: FC = () => {
 
         <div className="overflow-hidden">
           <ul className="space-y-2 p-4">
-            {sidebarItems
-              .filter(
-                (item) =>
-                  !(item.link === "/profile/history" && accounts.length === 0),
-              )
-              .map((item, idx) => {
-                const navActive = pathname === item.link;
-                return (
-                  <li key={idx} onClick={() => setNavOpen(false)}>
-                    <Link
-                      href={item.link}
+            {sidebarItems.map((item, idx) => {
+              const navActive = pathname === item.link;
+
+              return (
+                <li
+                  key={idx}
+                  onClick={() => setNavOpen(false)}
+                  className={cn({
+                    hidden:
+                      !loading &&
+                      accounts.length === 0 &&
+                      item.label === "History",
+                  })}
+                >
+                  <Link
+                    href={item.link}
+                    className={cn(
+                      "flex items-center gap-2 rounded text-nowrap cursor-pointer",
+                      { "hover:bg-slate-400/20": open && !navActive },
+                      { "bg-primary": open && navActive },
+                    )}
+                  >
+                    <div
                       className={cn(
-                        "flex items-center gap-2 rounded text-nowrap cursor-pointer",
-                        { "hover:bg-slate-400/20": open && !navActive },
-                        { "bg-primary": open && navActive },
+                        "p-2.5 rounded-full",
+                        { "hover:bg-slate-400/20": !open && !navActive },
+                        { "bg-primary": !open && navActive },
                       )}
                     >
-                      <div
-                        className={cn(
-                          "p-2.5 rounded-full",
-                          { "hover:bg-slate-400/20": !open && !navActive },
-                          { "bg-primary": !open && navActive },
-                        )}
-                      >
-                        {item.icon}
-                      </div>
-                      <p>{open && item.label}</p>
-                    </Link>
-                  </li>
-                );
-              })}
+                      {item.icon}
+                    </div>
+                    <p>{open && item.label}</p>
+                  </Link>
+                </li>
+              );
+            })}
 
             <DropdownMenuSeparator />
 
