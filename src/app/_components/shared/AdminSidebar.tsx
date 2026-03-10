@@ -37,7 +37,11 @@ const sidebarItems = [
     icon: <ArrowLeftRight />,
     link: "/admin/transactions",
   },
-  { label: "Profit Distribution", icon: <HandCoins />, link: "/admin/profit-distribution" },
+  {
+    label: "Profit Distribution",
+    icon: <HandCoins />,
+    link: "/admin/profit-distribution",
+  },
   { label: "Announcements", icon: <Megaphone />, link: "/admin/announcements" },
   { label: "Leaderboard", icon: <LeaderBoard />, link: "/admin/leaderboard" },
   { label: "Events", icon: <CalendarDays />, link: "/admin/events" },
@@ -104,14 +108,14 @@ const AdminSidebar: FC = () => {
 
                     {pendingRequests.length > 0 &&
                       item.label === "Pending Requests" && (
-                        <div
+                        <span
                           className={cn(
-                            " bg-red-600 size-5.5 text-sm flex justify-center items-center rounded-full z-20",
+                            " bg-red-600 h-5 px-1.5 text-sm text-center rounded-full z-20",
                             { "absolute -right-4 -top-2": !open },
                           )}
                         >
                           {pendingRequests.length}
-                        </div>
+                        </span>
                       )}
                   </Link>
                 </li>
