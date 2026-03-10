@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/providers/SidebarContext";
+import { useAccounts } from "@/providers/AccountContext";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Exit, LeftArrowIcon } from "@/icons";
 import { History, Info, Settings, User, UserRoundPen } from "lucide-react";
@@ -18,9 +19,11 @@ const sidebarItems = [
 ];
 
 const ProfileSidebar: FC = () => {
+  const { accounts } = useAccounts();
   const pathname = usePathname();
   const { open } = useSidebar();
   const [navOpen, setNavOpen] = useState<boolean>(false);
+
   return (
     <>
       <aside
@@ -40,32 +43,37 @@ const ProfileSidebar: FC = () => {
 
         <div className="overflow-hidden">
           <ul className="space-y-2 p-4">
-            {sidebarItems.map((item, idx) => {
-              const navActive = pathname === item.link;
-              return (
-                <li key={idx} onClick={() => setNavOpen(false)}>
-                  <Link
-                    href={item.link}
-                    className={cn(
-                      "flex items-center gap-2 rounded text-nowrap cursor-pointer",
-                      { "hover:bg-slate-400/20": open && !navActive },
-                      { "bg-primary": open && navActive },
-                    )}
-                  >
-                    <div
+            {sidebarItems
+              .filter(
+                (item) =>
+                  !(item.link === "/profile/history" && accounts.length === 0),
+              )
+              .map((item, idx) => {
+                const navActive = pathname === item.link;
+                return (
+                  <li key={idx} onClick={() => setNavOpen(false)}>
+                    <Link
+                      href={item.link}
                       className={cn(
-                        "p-2.5 rounded-full",
-                        { "hover:bg-slate-400/20": !open && !navActive },
-                        { "bg-primary": !open && navActive },
+                        "flex items-center gap-2 rounded text-nowrap cursor-pointer",
+                        { "hover:bg-slate-400/20": open && !navActive },
+                        { "bg-primary": open && navActive },
                       )}
                     >
-                      {item.icon}
-                    </div>
-                    <p>{open && item.label}</p>
-                  </Link>
-                </li>
-              );
-            })}
+                      <div
+                        className={cn(
+                          "p-2.5 rounded-full",
+                          { "hover:bg-slate-400/20": !open && !navActive },
+                          { "bg-primary": !open && navActive },
+                        )}
+                      >
+                        {item.icon}
+                      </div>
+                      <p>{open && item.label}</p>
+                    </Link>
+                  </li>
+                );
+              })}
 
             <DropdownMenuSeparator />
 
