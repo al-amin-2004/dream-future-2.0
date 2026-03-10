@@ -26,6 +26,7 @@ import {
   MailIcon,
   UserIcon,
 } from "lucide-react";
+import ErrorMessage from "@/app/_components/ui/ErrorMessage";
 
 type SigninFormData = z.infer<typeof signinSchema>;
 
@@ -100,11 +101,7 @@ const SignUp = () => {
               className="pl-8 md:pl-9"
             />
           </div>
-          {errors.email && (
-            <p className="text-red-400 text-xs">
-              {errors.email.message}
-            </p>
-          )}
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
 
         {/* Password Input */}
@@ -131,9 +128,7 @@ const SignUp = () => {
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-400 text-xs">
-              {errors.password.message}
-            </p>
+            <ErrorMessage>{errors.password.message}</ErrorMessage>
           )}
         </div>
 
