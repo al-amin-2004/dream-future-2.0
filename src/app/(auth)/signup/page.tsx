@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import z from "zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/app/_components/ui/Button";
+import { toast } from "sonner";
+import z from "zod";
 import Input from "../../_components/ui/Input";
 import Label from "../../_components/ui/Label";
-import { toast } from "sonner";
 import {
   RegistrationCard,
   RegistrationCardDescription,
@@ -86,7 +86,7 @@ const SignUp = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* First and last Name Inputs */}
         <div className="flex gap-2">
-          <div className="w-full space-y-2">
+          <div className="w-full">
             <Label htmlFor="firstName">First name</Label>
             <Input
               id="firstName"
@@ -97,7 +97,7 @@ const SignUp = () => {
               <p className="text-red-500 text-xs">{errors.firstName.message}</p>
             )}
           </div>
-          <div className="w-full space-y-2">
+          <div className="w-full">
             <Label htmlFor="lastName">Last name</Label>
             <Input id="lastName" placeholder="Doe" {...register("lastName")} />
             {errors.lastName && (
@@ -107,7 +107,7 @@ const SignUp = () => {
         </div>
 
         {/* Email Input */}
-        <div className="space-y-2">
+        <div>
           <Label htmlFor="email">Email</Label>
           <div className="relative">
             <MailIcon
@@ -127,7 +127,7 @@ const SignUp = () => {
         </div>
 
         {/* Password Input */}
-        <div className="space-y-2">
+        <div>
           <Label htmlFor="password">Password</Label>
           <div className="relative">
             <LockIcon

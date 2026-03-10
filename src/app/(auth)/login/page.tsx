@@ -86,7 +86,7 @@ const SignUp = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Email Input */}
-        <div className="space-y-2">
+        <div>
           <Label htmlFor="email">Email</Label>
           <div className="relative">
             <MailIcon
@@ -108,7 +108,7 @@ const SignUp = () => {
         </div>
 
         {/* Password Input */}
-        <div className="space-y-2">
+        <div>
           <Label htmlFor="password">Password</Label>
           <div className="relative">
             <LockIcon

@@ -72,7 +72,7 @@ const FinancialAccCreatepage = () => {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="space-y-2">
+          <div>
             <Label htmlFor="accountname">Account Name</Label>
             <Input
               id="accountname"

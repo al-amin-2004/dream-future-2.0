@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/app/_components/ui/Button";
+import DepositRequestForm from "./DepositRequestForm";
+import WithdrawRequestForm from "./WithdrawRequestForm";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import DepositRequestForm from "./DepositRequestForm";
-import WithdrawRequestForm from "./WithdrawRequestForm";
 
 const RequestForm = () => {
   const [openDeposit, setOpenDeposit] = useState(false);

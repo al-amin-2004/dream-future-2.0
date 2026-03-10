@@ -165,7 +165,7 @@ const Members = () => {
                       <DropdownMenuItem onClick={() => setChangeRole(user)}>
                         Change Role
                       </DropdownMenuItem>
-                      <DropdownMenuItem>Delete User</DropdownMenuItem>
+                      <DropdownMenuItem disabled>Delete User</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </td>
