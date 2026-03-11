@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import { Button } from "@/app/_components/ui/Button";
 import Input from "@/app/_components/ui/Input";
 import Label from "@/app/_components/ui/Label";
@@ -15,8 +15,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useAccounts } from "@/providers/AccountContext";
+import { cn } from "@/lib/utils";
 
-const FinancialAccCreatepage = () => {
+interface FinancialAccCreatepageProps {
+  className?: string;
+  btnClass?: string;
+  btnLabel?: string;
+}
+
+const FinancialAccCreatepage: FC<FinancialAccCreatepageProps> = ({
+  className,
+  btnClass,
+  btnLabel = "Open an Account",
+}) => {
   const { refreshAccounts } = useAccounts();
   const [value, setValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,10 +71,10 @@ const FinancialAccCreatepage = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Open an Account</Button>
+        <Button className={btnClass}>{btnLabel}</Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={cn("sm:max-w-md", className)}>
         <DialogHeader>
           <DialogTitle>Create Account</DialogTitle>
           <DialogDescription>

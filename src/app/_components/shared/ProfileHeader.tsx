@@ -37,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import FinancialAccCreatepage from "@/app/(auth)/components/ui/CreateFinancialAccount";
 
 const ProfileHeader: FC = () => {
   const { accounts, activeAccount, setActiveAccount } = useAccounts();
@@ -141,6 +142,7 @@ const ProfileHeader: FC = () => {
                   <p className="text-xs text-primary">{user?.role}</p>
                 </div>
               </DropdownMenuItem>
+
               {accounts.length > 1 && (
                 <Select
                   value={activeAccount ? String(activeAccount._id) : undefined}
@@ -168,6 +170,20 @@ const ProfileHeader: FC = () => {
                 </Select>
               )}
             </DropdownMenuGroup>
+
+            <DropdownMenuItem
+              className="p-0"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <FinancialAccCreatepage
+                btnClass="px-2 p-1.5 text-inharit bg-inherit hover:bg-inherit hover:translate-0 w-full rounded justify-start"
+                btnLabel={
+                  accounts.length === 0
+                    ? "Open an Account"
+                    : "Open another Account"
+                }
+              />
+            </DropdownMenuItem>
 
             {user?.role === "admin" && (
               <div>
