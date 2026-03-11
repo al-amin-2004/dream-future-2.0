@@ -9,9 +9,10 @@ import { useUser } from "@/providers/UserContext";
 import { useAccounts } from "@/providers/AccountContext";
 import { Button } from "@/app/_components/ui/Button";
 import { Skeleton } from "@/components/ui/skeleton";
-import LogoutButton from "@/app/(auth)/components/ui/LogoutButton";
 import { ChevronDown, PanelLeft, PanelRight, User } from "lucide-react";
+import LogoutButton from "@/app/(auth)/components/ui/LogoutButton";
 import Notification from "../ui/Notification";
+import FinancialAccCreatepage from "@/app/(auth)/components/ui/CreateFinancialAccount";
 // import Rewards from "../ui/Rewards";
 import {
   DropdownMenu,
@@ -141,6 +142,7 @@ const ProfileHeader: FC = () => {
                   <p className="text-xs text-primary">{user?.role}</p>
                 </div>
               </DropdownMenuItem>
+
               {accounts.length > 1 && (
                 <Select
                   value={activeAccount ? String(activeAccount._id) : undefined}
@@ -168,6 +170,20 @@ const ProfileHeader: FC = () => {
                 </Select>
               )}
             </DropdownMenuGroup>
+
+            <DropdownMenuItem
+              className="p-0"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <FinancialAccCreatepage
+                btnClass="px-2 p-1.5 text-inharit bg-inherit hover:bg-inherit hover:translate-0 w-full rounded justify-start"
+                btnLabel={
+                  accounts.length === 0
+                    ? "Open an Account"
+                    : "Open another Account"
+                }
+              />
+            </DropdownMenuItem>
 
             {user?.role === "admin" && (
               <div>
