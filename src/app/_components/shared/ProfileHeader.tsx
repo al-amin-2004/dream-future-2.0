@@ -9,9 +9,10 @@ import { useUser } from "@/providers/UserContext";
 import { useAccounts } from "@/providers/AccountContext";
 import { Button } from "@/app/_components/ui/Button";
 import { Skeleton } from "@/components/ui/skeleton";
-import LogoutButton from "@/app/(auth)/components/ui/LogoutButton";
 import { ChevronDown, PanelLeft, PanelRight, User } from "lucide-react";
+import LogoutButton from "@/app/(auth)/components/ui/LogoutButton";
 import Notification from "../ui/Notification";
+import FinancialAccCreatepage from "@/app/(auth)/components/ui/CreateFinancialAccount";
 // import Rewards from "../ui/Rewards";
 import {
   DropdownMenu,
@@ -37,7 +38,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import FinancialAccCreatepage from "@/app/(auth)/components/ui/CreateFinancialAccount";
 
 const ProfileHeader: FC = () => {
   const { accounts, activeAccount, setActiveAccount } = useAccounts();
