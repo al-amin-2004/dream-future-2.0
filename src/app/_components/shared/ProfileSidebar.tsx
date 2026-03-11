@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/providers/SidebarContext";
+import { useAccounts } from "@/providers/AccountContext";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Exit, LeftArrowIcon } from "@/icons";
 import { History, Info, Settings, User, UserRoundPen } from "lucide-react";
@@ -18,9 +19,11 @@ const sidebarItems = [
 ];
 
 const ProfileSidebar: FC = () => {
+  const { accounts, loading } = useAccounts();
   const pathname = usePathname();
   const { open } = useSidebar();
   const [navOpen, setNavOpen] = useState<boolean>(false);
+
   return (
     <>
       <aside
@@ -42,8 +45,18 @@ const ProfileSidebar: FC = () => {
           <ul className="space-y-2 p-4">
             {sidebarItems.map((item, idx) => {
               const navActive = pathname === item.link;
+
               return (
-                <li key={idx} onClick={() => setNavOpen(false)}>
+                <li
+                  key={idx}
+                  onClick={() => setNavOpen(false)}
+                  className={cn({
+                    hidden:
+                      !loading &&
+                      accounts.length === 0 &&
+                      item.label === "History",
+                  })}
+                >
                   <Link
                     href={item.link}
                     className={cn(

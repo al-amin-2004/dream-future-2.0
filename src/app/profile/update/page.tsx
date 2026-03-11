@@ -4,19 +4,19 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ProfilePageTitle from "@/app/_components/ui/PageTitle";
-import Input from "@/app/_components/ui/Input";
 import { Button } from "@/app/_components/ui/Button";
 import { Camera } from "lucide-react";
 import { toast } from "sonner";
 import { useUser } from "@/providers/UserContext";
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "@/lib/motion";
-import Label from "@/app/_components/ui/Label";
-import z from "zod";
 import { updateProfileScema } from "@/schemas/updateProfileScema";
-import ErrorMessage from "@/app/_components/ui/ErrorMessage";
 import { country, gender } from "@/constants/user";
+import ProfilePageTitle from "@/app/_components/ui/PageTitle";
+import Input from "@/app/_components/ui/Input";
+import Label from "@/app/_components/ui/Label";
+import ErrorMessage from "@/app/_components/ui/ErrorMessage";
+import z from "zod";
 
 const UpdateProfile = () => {
   const { user, refreshUser } = useUser();
@@ -99,7 +99,6 @@ const UpdateProfile = () => {
     } catch (error) {
       console.error("Update Error:", error);
       toast.error("Failed to update Profile!");
-    } finally {
     }
   };
   return (
@@ -169,18 +168,14 @@ const UpdateProfile = () => {
           {/* First & Last Name */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="firstName" className="mb-1">
-                First Name
-              </Label>
+              <Label htmlFor="firstName">First Name</Label>
               <Input id="firstName" {...register("firstName")} />
               {errors.firstName && (
                 <ErrorMessage>{errors.firstName.message}</ErrorMessage>
               )}
             </div>
             <div>
-              <Label htmlFor="lastName" className="mb-1">
-                Last Name
-              </Label>
+              <Label htmlFor="lastName">Last Name</Label>
               <Input id="lastName" {...register("lastName")} />
               {errors.lastName && (
                 <ErrorMessage>{errors.lastName.message}</ErrorMessage>
@@ -191,9 +186,7 @@ const UpdateProfile = () => {
           {/* Number & Date of Birth */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="number" className="mb-1">
-                Phone Number
-              </Label>
+              <Label htmlFor="number">Phone Number</Label>
               <Input id="number" {...register("number")} />
               {errors.number && (
                 <ErrorMessage>{errors.number.message}</ErrorMessage>
@@ -201,9 +194,7 @@ const UpdateProfile = () => {
             </div>
 
             <div>
-              <Label htmlFor="dateOfBirth" className="mb-1">
-                Date of Birth
-              </Label>
+              <Label htmlFor="dateOfBirth">Date of Birth</Label>
               <Input id="dateOfBirth" type="date" {...register("birthday")} />
               {errors.birthday && (
                 <ErrorMessage>{errors.birthday.message}</ErrorMessage>
@@ -214,9 +205,7 @@ const UpdateProfile = () => {
           {/* Nationality & Gender */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="nationality" className="mb-1">
-                Nationality
-              </Label>
+              <Label htmlFor="nationality">Nationality</Label>
               <select
                 id="nationality"
                 {...register("nationality")}
@@ -232,9 +221,7 @@ const UpdateProfile = () => {
             </div>
 
             <div>
-              <Label htmlFor="gender" className="mb-1">
-                Gender
-              </Label>
+              <Label htmlFor="gender">Gender</Label>
               <select
                 id="gender"
                 {...register("gender")}
@@ -252,9 +239,7 @@ const UpdateProfile = () => {
 
           {/* Address */}
           <div>
-            <Label htmlFor="address" className="mb-1">
-              Address
-            </Label>
+            <Label htmlFor="address">Address</Label>
             <textarea
               id="address"
               {...register("address")}

@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         success: true,
         email: user.email,
         expiresAt: otpData.expiresAt,
-        message: "otpData get successfully.",
+        message: "OTP Data get successfully.",
       },
       { status: 200 },
     );

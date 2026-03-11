@@ -1,5 +1,5 @@
-import { country, gender } from "@/constants/user";
 import z from "zod";
+import { country, gender } from "@/constants/user";
 
 export const nameValidation = z
   .string()

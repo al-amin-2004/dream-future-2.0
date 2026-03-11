@@ -26,6 +26,7 @@ import {
   MailIcon,
   UserIcon,
 } from "lucide-react";
+import ErrorMessage from "@/app/_components/ui/ErrorMessage";
 
 type SigninFormData = z.infer<typeof signinSchema>;
 
@@ -55,6 +56,7 @@ const SignUp = () => {
 
       if (!res.ok) {
         toast.error(data.message || "Login failed");
+        return;
       }
 
       toast.success(data.message);
@@ -69,7 +71,7 @@ const SignUp = () => {
   };
 
   return (
-    <RegistrationCard className="w-full max-w-md  mt-20">
+    <RegistrationCard className="w-full max-w-md mt-20">
       {/* Header */}
       <RegistrationCardHeader>
         <div className="inline-flex items-center justify-center size-16 md:size-12 bg-gray-900 rounded-full mb-4 ring md:ring-0 ring-primary">
@@ -85,7 +87,7 @@ const SignUp = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Email Input */}
-        <div className="space-y-2">
+        <div>
           <Label htmlFor="email">Email</Label>
           <div className="relative">
             <MailIcon
@@ -99,15 +101,11 @@ const SignUp = () => {
               className="pl-8 md:pl-9"
             />
           </div>
-          {errors.email && (
-            <p className="text-red-400 text-xs -mt-1.5">
-              {errors.email.message}
-            </p>
-          )}
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
 
         {/* Password Input */}
-        <div className="space-y-2">
+        <div>
           <Label htmlFor="password">Password</Label>
           <div className="relative">
             <LockIcon
@@ -130,9 +128,7 @@ const SignUp = () => {
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-400 text-xs -mt-1.5">
-              {errors.password.message}
-            </p>
+            <ErrorMessage>{errors.password.message}</ErrorMessage>
           )}
         </div>
 

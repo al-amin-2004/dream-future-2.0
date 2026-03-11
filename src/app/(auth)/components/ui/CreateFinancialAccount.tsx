@@ -14,8 +14,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAccounts } from "@/providers/AccountContext";
 
 const FinancialAccCreatepage = () => {
+  const { refreshAccounts } = useAccounts();
   const [value, setValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -45,6 +47,7 @@ const FinancialAccCreatepage = () => {
 
       toast.success("Account created successfully!");
       setValue("");
+      refreshAccounts();
       setIsOpen(false);
     } catch (error) {
       console.error(error);
@@ -69,7 +72,7 @@ const FinancialAccCreatepage = () => {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="space-y-2">
+          <div>
             <Label htmlFor="accountname">Account Name</Label>
             <Input
               id="accountname"

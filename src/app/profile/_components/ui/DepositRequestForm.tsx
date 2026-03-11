@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { toast } from "sonner";
 import { useAccounts } from "@/providers/AccountContext";
 import { X } from "lucide-react";
@@ -11,9 +10,10 @@ import { Button } from "@/app/_components/ui/Button";
 import { getCurrentMonth } from "@/helpers/getCurrentMonth";
 import { depositRequestSchema } from "@/schemas/depositRequestSchema";
 import { paymentMethods } from "@/constants/request";
+import z from "zod";
 import ErrorMessage from "@/app/_components/ui/ErrorMessage";
-import Input from "@/app/_components/ui/Input";
 import Label from "@/app/_components/ui/Label";
+import Input from "@/app/_components/ui/Input";
 import {
   RegistrationCard,
   RegistrationCardHeader,
@@ -112,7 +112,7 @@ const DepositRequestForm = ({ open, setOpen }: DepositRequestFormProps) => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Amount */}
-              <div className="space-y-2">
+              <div>
                 <Label htmlFor="amount">Deposit Amount (৳)</Label>
                 <Input
                   id="amount"
@@ -128,7 +128,7 @@ const DepositRequestForm = ({ open, setOpen }: DepositRequestFormProps) => {
               </div>
 
               {/* Month */}
-              <div className="space-y-2">
+              <div>
                 <Label htmlFor="month">Deposit Month</Label>
                 <Input
                   id="month"
@@ -142,7 +142,7 @@ const DepositRequestForm = ({ open, setOpen }: DepositRequestFormProps) => {
               </div>
 
               {/* Payment Method */}
-              <div className="space-y-2">
+              <div>
                 <Label htmlFor="method">Payment Method</Label>
                 <div className="flex gap-4">
                   {depositMethods.map((m) => (
@@ -166,7 +166,7 @@ const DepositRequestForm = ({ open, setOpen }: DepositRequestFormProps) => {
               </div>
 
               {/* Transaction ID */}
-              <div className="space-y-2">
+              <div>
                 <Label htmlFor="transaction-id">Transaction ID</Label>
                 <Input
                   id="transaction-id"

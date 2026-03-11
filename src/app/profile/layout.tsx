@@ -7,19 +7,19 @@ import ProfileSidebar from "../_components/shared/ProfileSidebar";
 
 export default function ProfileLayout({ children }: { children: ReactNode }) {
   return (
-    <SidebarProvider>
-      <main className="flex h-screen overflow-hidden" aria-hidden={false}>
-        <ProfileSidebar />
+    <UserProvider>
+      <AccountProvider>
+        <SidebarProvider>
+          <main className="flex h-screen overflow-hidden" aria-hidden={false}>
+            <ProfileSidebar />
 
-        <UserProvider>
-          <AccountProvider>
             <div className="flex-1 overflow-y-scroll">
               <ProfileHeader />
               <section className="px-6 md:px-14">{children}</section>
             </div>
-          </AccountProvider>
-        </UserProvider>
-      </main>
-    </SidebarProvider>
+          </main>
+        </SidebarProvider>
+      </AccountProvider>
+    </UserProvider>
   );
 }

@@ -1,16 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
-import ProfilePageTitle from "@/app/_components/ui/PageTitle";
 import { useUser } from "@/providers/UserContext";
 import { useAccounts } from "@/providers/AccountContext";
-import UserDetailsList from "@/app/_components/ui/UserDetailsList";
-import FinancialAccCreatepage from "../(auth)/components/ui/CreateFinancialAccount";
-import RequestForm from "./_components/ui/RequestForm";
+import { cn } from "@/lib/utils";
 import { Loading2 } from "@/icons";
 import { motion } from "framer-motion";
 import { fadeUp, fade, stagger } from "@/lib/motion";
+import ProfilePageTitle from "@/app/_components/ui/PageTitle";
+import UserDetailsList from "@/app/_components/ui/UserDetailsList";
+import FinancialAccCreatepage from "../(auth)/components/ui/CreateFinancialAccount";
+import RequestForm from "./_components/ui/RequestForm";
 import {
   Tooltip,
   TooltipContent,
@@ -20,6 +22,7 @@ import {
 const Profile = () => {
   const { user, loading } = useUser();
   const { accounts, activeAccount } = useAccounts();
+  const [showBalance, setShowBalance] = useState<boolean>(false);
 
   if (loading)
     return (
@@ -45,6 +48,14 @@ const Profile = () => {
     address,
     nationality,
   } = user;
+
+  const handleClick = () => {
+    setShowBalance(true);
+
+    setTimeout(() => {
+      setShowBalance(false);
+    }, 5000);
+  };
 
   return (
     <motion.div
@@ -91,7 +102,11 @@ const Profile = () => {
 
         {/* Top right side */}
         <motion.div variants={fadeUp} className="flex-3 flex flex-col gap-8">
-          {accounts ? (
+          {accounts.length === 0 ? (
+            <div className="border-2 p-3.5 md:p-6 rounded-xl flex justify-end">
+              <FinancialAccCreatepage />
+            </div>
+          ) : (
             <div className="border-2 p-3.5 md:p-6 rounded-xl">
               <div className="flex justify-between py-3 border-b">
                 <h1 className="text-xl font-semibold">Balance quiry</h1>
@@ -135,15 +150,19 @@ const Profile = () => {
                 </div>
                 <div className="p-2.5 md:p-3 space-y-2.5 rounded-xl bg-blue-500/20 col-span-2 lg:col-span-1">
                   <h3 className="text-sm text-blue-500">Total Balance</h3>
-                  <p className="text-2xl font-bold">
-                    $ {activeAccount?.balance}.00
-                  </p>
+                  <div
+                    className={cn(
+                      "px-1.5 h-9 w-6.5 rounded-lg bg-amber-700 overflow-hidden transition-all duration-300 cursor-pointer",
+                      { "w-full": showBalance },
+                    )}
+                    onClick={handleClick}
+                  >
+                    <p className="text-2xl font-bold text-nowrap">
+                      $ {activeAccount?.balance}.00
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="border-2 p-3.5 md:p-6 rounded-xl flex justify-end">
-              <FinancialAccCreatepage />
             </div>
           )}
 
