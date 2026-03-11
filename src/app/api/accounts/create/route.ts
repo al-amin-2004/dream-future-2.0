@@ -1,37 +1,27 @@
 // ***** Code flow this page ******* \\
-// 1. Get token from cookie
-// 2. Decode token
-// 3. Get Account name from POST request
-// 4. Trimed Account Name
-// 5. Check existing Account Name this user
-// 6. Generate account number from helper
-// 7. Create account in Database
+// 1. Get decoded form getAuthUserId
+// 2. Get Account name from POST request
+// 3. Trimed Account Name
+// 4. Check existing Account Name this user
+// 5. Generate account number from helper
+// 6. Create account in Database
 
 import { generateAccountNumber } from "@/helpers/generateAccountNumber";
+import { getAuthUserId } from "@/helpers/getUserId";
 import dbConnect from "@/lib/dbConnect";
 import AccountModel from "@/models/Account";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { cookies } from "next/headers";
-
-const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: Request) {
   try {
     await dbConnect();
 
-    const cookieStore = await cookies();
-    const token = cookieStore.get("auth_token")?.value;
-
-    if (!token) {
+    const auth = await getAuthUserId();
+    if (!auth.ok) {
       return Response.json(
-        { ok: false, message: "No auth token" },
-        { status: 401 },
+        { ok: false, message: auth.message },
+        { status: auth.status },
       );
     }
-
-    const decode = jwt.verify(token, JWT_SECRET) as JwtPayload & {
-      userId: string;
-    };
 
     const { accName } = await request.json();
     if (!accName.trim()) {
@@ -41,7 +31,7 @@ export async function POST(request: Request) {
     const trimedName = accName.trim();
 
     const existingAccName = await AccountModel.findOne({
-      userId: decode.userId,
+      userId: auth.decode?.userId,
       accName: trimedName,
     });
     if (existingAccName) {
@@ -55,7 +45,7 @@ export async function POST(request: Request) {
 
     // Create new Account
     await AccountModel.create({
-      userId: decode.userId,
+      userId: auth.decode?.userId,
       accName: trimedName,
       accNumber,
     });

@@ -1,15 +1,11 @@
 // ***** Code flow this page ******* \\
 // 1. Besic inputs validation
-// 2. Get token from cookie
-// 3. Decode token
-// 4. Find by id and update user
+// 2. Get decoded form getAuthUserId
+// 3. Find by id and update user
 
 import dbConnect from "@/lib/dbConnect";
-import { cookies } from "next/headers";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import UserModel from "@/models/User";
-
-const JWT_SECRET = process.env.JWT_SECRET!;
+import { getAuthUserId } from "@/helpers/getUserId";
 
 export async function PATCH(request: Request) {
   try {
@@ -27,24 +23,16 @@ export async function PATCH(request: Request) {
       avatarId,
     } = await request.json();
 
-    // Read Token
-    const cookieStore = await cookies();
-    const token = cookieStore.get("auth_token")?.value;
-
-    if (!token) {
+    const auth = await getAuthUserId();
+    if (!auth.ok) {
       return Response.json(
-        { ok: false, message: "No auth token" },
-        { status: 401 },
+        { ok: false, message: auth.message },
+        { status: auth.status },
       );
     }
 
-    // Decode token
-    const decode = jwt.verify(token, JWT_SECRET) as JwtPayload & {
-      userId: string;
-    };
-
     const updatedUser = await UserModel.findByIdAndUpdate(
-      decode.userId,
+      auth.decode?.userId,
       {
         $set: {
           firstName,

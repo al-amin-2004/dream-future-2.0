@@ -1,34 +1,24 @@
 // ***** Code flow this page ******* \\
-// 1. Get token from cookie
-// 2. Decode token
-// 3. Get user from database
+// 1. Get decoded form getAuthUserId
+// 2. Get user from database
 
 import dbConnect from "@/lib/dbConnect";
-import { cookies } from "next/headers";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import UserModel from "@/models/User";
-
-const JWT_SECRET = process.env.JWT_SECRET!;
+import { getAuthUserId } from "@/helpers/getUserId";
 
 export async function GET() {
   try {
     await dbConnect();
 
-    const cookieStore = await cookies();
-    const token = cookieStore.get("auth_token")?.value;
-
-    if (!token) {
+    const auth = await getAuthUserId();
+    if (!auth.ok) {
       return Response.json(
-        { ok: false, message: "No auth token" },
-        { status: 401 },
+        { ok: false, message: auth.message },
+        { status: auth.status },
       );
     }
 
-    const decode = jwt.verify(token, JWT_SECRET) as JwtPayload & {
-      userId: string;
-    };
-
-    const user = await UserModel.findOne({ _id: decode.userId })
+    const user = await UserModel.findOne({ _id: auth.decode?.userId })
       .select("-password")
       .lean();
 

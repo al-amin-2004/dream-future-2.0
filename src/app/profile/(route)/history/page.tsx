@@ -10,7 +10,7 @@ import {
   HistoryCardGrid,
   HistoryCardList,
   TransactionCardProps,
-} from "../_components/ui/HistoryCard";
+} from "../../_components/ui/HistoryCard";
 import {
   ArrowDownUp,
   ArrowRight,
@@ -46,7 +46,7 @@ const History = () => {
   }, [activeAccount]);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
       {/* ================= PAGE TITLE COMPONENT ================= */}
       <ProfilePageTitle
         title="History"
