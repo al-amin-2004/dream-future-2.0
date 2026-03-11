@@ -3,8 +3,18 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { IUser } from "@/types";
+import { country, gender } from "@/constants/user";
+import { useAllUsers } from "@/providers/AllUsersContext";
+import { adminUpdateUserSchema } from "@/schemas/adminUpdateUserScema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/app/_components/ui/Button";
+import { toast } from "sonner";
+import { Camera } from "lucide-react";
 import Input from "@/app/_components/ui/Input";
+import Label from "@/app/_components/ui/Label";
+import ErrorMessage from "@/app/_components/ui/ErrorMessage";
+import z from "zod";
 import {
   Dialog,
   DialogClose,
@@ -14,16 +24,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
-import Label from "@/app/_components/ui/Label";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { adminUpdateUserSchema } from "@/schemas/adminUpdateUserScema";
-import ErrorMessage from "@/app/_components/ui/ErrorMessage";
-import { country, gender } from "@/constants/user";
-import { Camera } from "lucide-react";
-import { useAllUsers } from "@/providers/AllUsersContext";
 
 interface EditProfileProps {
   user: IUser | null;
@@ -33,6 +33,7 @@ interface EditProfileProps {
 
 const EditProfile: FC<EditProfileProps> = ({ user, open, onClose }) => {
   const { refreshUsers } = useAllUsers();
+  const [profilePic, setProfilePic] = useState<File | string | null>(null);
   const [profilePicChanged, setProfilePicChanged] = useState(false);
 
   type AdminUpdateprofileData = z.infer<typeof adminUpdateUserSchema>;
@@ -40,7 +41,6 @@ const EditProfile: FC<EditProfileProps> = ({ user, open, onClose }) => {
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
     reset,
     formState: { errors, isDirty, isSubmitting },
@@ -52,7 +52,6 @@ const EditProfile: FC<EditProfileProps> = ({ user, open, onClose }) => {
   useEffect(() => {
     if (user) {
       reset({
-        avatar: user.avatar || "",
         avatarId: user.avatarId || "",
         firstName: user.firstName || "",
         lastName: user.lastName || "",
@@ -68,20 +67,20 @@ const EditProfile: FC<EditProfileProps> = ({ user, open, onClose }) => {
           ? new Date(user.dob).toISOString().split("T")[0]
           : "",
       });
+      setProfilePic(user?.avatar || null);
     }
   }, [user, reset]);
 
-  const avatar = watch("avatar");
   const avatarId = watch("avatarId");
 
   const onSubmit = async (data: AdminUpdateprofileData) => {
     try {
-      let uploadedImageUrl = typeof avatar === "string" ? avatar : "";
+      let uploadedImageUrl = typeof profilePic === "string" ? profilePic : "";
       let uploadedPublicId = avatarId;
 
-      if (avatar && !(typeof avatar === "string")) {
+      if (profilePic && profilePic instanceof File) {
         const imgForm = new FormData();
-        imgForm.append("file", avatar);
+        imgForm.append("file", profilePic);
 
         if (avatarId) {
           imgForm.append("oldPublicId", avatarId);
@@ -137,12 +136,12 @@ const EditProfile: FC<EditProfileProps> = ({ user, open, onClose }) => {
         </DialogHeader>
 
         <div className="flex justify-between items-center">
-          {avatar ? (
+          {profilePic ? (
             <Image
               src={
-                typeof avatar === "string"
-                  ? avatar
-                  : URL.createObjectURL(avatar)
+                typeof profilePic === "string"
+                  ? profilePic
+                  : URL.createObjectURL(profilePic)
               }
               width={200}
               height={200}
@@ -177,11 +176,8 @@ const EditProfile: FC<EditProfileProps> = ({ user, open, onClose }) => {
               accept="image/*"
               className="hidden"
               onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  setValue("avatar", URL.createObjectURL(file));
-                  setProfilePicChanged(true);
-                }
+                setProfilePic(e.target.files?.[0] || null);
+                setProfilePicChanged(true);
               }}
             />
           </div>
