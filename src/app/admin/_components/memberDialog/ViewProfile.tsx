@@ -4,6 +4,7 @@ import { FC } from "react";
 import Image from "next/image";
 import { IUser } from "@/types";
 import { Button } from "@/app/_components/ui/Button";
+import { useAllAccounts } from "@/providers/AllAccountsContext";
 import DialogInfoRow from "@/app/_components/ui/DialogInfoRow";
 import {
   Dialog,
@@ -19,6 +20,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { cn } from "@/lib/utils";
 
 interface ViewProfileProps {
   user: IUser | null;
@@ -27,38 +29,60 @@ interface ViewProfileProps {
 }
 
 const ViewProfile: FC<ViewProfileProps> = ({ user, open, onClose }) => {
+  const { allAccounts } = useAllAccounts();
+
   if (!user) return null;
+
+  const memberAccounts = allAccounts.filter((a) => a.userId === user._id);
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="min-w-2xl">
+      <DialogContent className="min-w-2xl z-80">
         <DialogHeader>
           <DialogTitle>Member info</DialogTitle>
           <DialogDescription className="border-b pb-3">
             Check member info for manage.
           </DialogDescription>
         </DialogHeader>
-        {user.avatar && (
-          <HoverCard openDelay={10} closeDelay={5000}>
-            <HoverCardTrigger asChild>
-              <Image
-                src={user.avatar}
-                width={200}
-                height={200}
-                className="size-15 rounded-full cursor-pointer"
-                alt="Profile Picture"
-              />
-            </HoverCardTrigger>
-            <HoverCardContent side="right">
-              <Image
-                src={user.avatar}
-                width={500}
-                height={500}
-                className="min-size-100"
-                alt="Profile Picture"
-              />
-            </HoverCardContent>
-          </HoverCard>
-        )}
+        <div className="flex justify-between">
+          {user.avatar && (
+            <HoverCard openDelay={10} closeDelay={5000}>
+              <HoverCardTrigger asChild>
+                <Image
+                  src={user.avatar}
+                  width={200}
+                  height={200}
+                  className="size-15 rounded-full cursor-pointer"
+                  alt="Profile Picture"
+                />
+              </HoverCardTrigger>
+              <HoverCardContent side="right" className="z-90">
+                <Image
+                  src={user.avatar}
+                  width={500}
+                  height={500}
+                  className="min-size-100"
+                  alt="Profile Picture"
+                />
+              </HoverCardContent>
+            </HoverCard>
+          )}
+
+          <ul>
+            {memberAccounts.map((a) => (
+              <li key={a._id} className="flex items-center">
+                <h3
+                  className={cn("px-1.5 rounded-full text-green-500", {
+                    "text-red-500": a.status === "block",
+                  })}
+                >
+                  {a.accName}:
+                </h3>
+                <small>{a.accNumber}</small>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div className="space-y-1">
             <DialogInfoRow
