@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = await UserModel.findById( userId );
+    const user = await UserModel.findById(userId);
     if (!user) {
       return Response.json(
         { success: false, message: "User not found." },
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: true,
-        email: user.email,
+        email: otpData.email,
         expiresAt: otpData.expiresAt,
         message: "OTP Data get successfully.",
       },

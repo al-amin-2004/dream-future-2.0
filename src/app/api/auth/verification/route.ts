@@ -24,28 +24,20 @@ export async function POST(req: Request) {
     await dbConnect();
 
     // bring userId, verify code from varification page
-    const { userId, otp } = await req.json();
-    if (!userId || !otp) {
+    const { userId, email, otp } = await req.json();
+    if (!userId || !email || !otp) {
       return Response.json(
-        { success: false, message: "UserId and OTP are required." },
+        { success: false, message: "UserId, email and OTP are required." },
         { status: 400 },
       );
     }
 
     // find user in databse with userId
-    const user = await UserModel.findOne({ _id: userId });
+    const user = await UserModel.findById(userId);
     if (!user) {
       return Response.json(
         { success: false, message: "User not found." },
         { status: 404 },
-      );
-    }
-
-    // check, is user already verified
-    if (user.isVerifiedEmail) {
-      return Response.json(
-        { success: false, message: "Email already verified." },
-        { status: 400 },
       );
     }
 
@@ -78,6 +70,7 @@ export async function POST(req: Request) {
     }
 
     // if otp matched, email verify true
+    user.email = email;
     user.isVerifiedEmail = true;
     await user.save();
 

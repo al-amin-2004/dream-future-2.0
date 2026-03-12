@@ -11,13 +11,13 @@ const validationSchema = new Schema<IVerificationType>(
       default: "email",
       required: true,
     },
+    email: { type: String, unique: true, sparse: true },
     verificationCode: { type: String, required: true },
     expiresAt: { type: Date, required: true },
     attempts: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
-
 // for auto delete from database
 validationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 

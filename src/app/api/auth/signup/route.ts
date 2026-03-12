@@ -28,46 +28,29 @@ export async function POST(request: Request) {
 
     const existingEmail = await UserModel.findOne({ email });
 
-    let userId;
-
     if (existingEmail) {
-      if (existingEmail.isVerifiedEmail) {
-        return Response.json(
-          { success: false, message: "User already exist with this email." },
-          { status: 400 },
-        );
-      } else {
-        existingEmail.password = hashedPassword;
-        await existingEmail.save();
-
-        userId = existingEmail._id;
-
-        await ValidationModel.findOneAndUpdate(
-          { userId: existingEmail._id },
-          {
-            verificationCode: hashedCode,
-            expiresAt: expiryDate,
-          },
-          { upsert: true, new: true },
-        );
-      }
-    } else {
-      const createNewUser = await UserModel.create({
-        firstName,
-        lastName,
-        username,
-        email,
-        password: hashedPassword,
-      });
-
-      userId = createNewUser._id;
-
-      await ValidationModel.create({
-        userId: createNewUser._id,
-        verificationCode: hashedCode,
-        expiresAt: expiryDate,
-      });
+      return Response.json(
+        { success: false, message: "User already exist with this email." },
+        { status: 400 },
+      );
     }
+
+    const createNewUser = await UserModel.create({
+      firstName,
+      lastName,
+      username,
+      email: "",
+      password: hashedPassword,
+    });
+
+    const userId = createNewUser._id;
+
+    await ValidationModel.create({
+      userId,
+      email,
+      verificationCode: hashedCode,
+      expiresAt: expiryDate,
+    });
 
     // Send Verify Email
     const emailRespons = await sendVerificationEmail(email, verifyCode);

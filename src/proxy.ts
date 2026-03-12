@@ -9,8 +9,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const authRoute = ["/login", "/signup", "/verification"];
-  
+  const authRoute = ["/login", "/signup"];
+
   if (token && authRoute.includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }

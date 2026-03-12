@@ -1,8 +1,9 @@
 import z from "zod";
 import { updateProfileScema } from "./updateProfileScema";
+import { emailValidation } from "./EmailSchema";
 
 export const adminUpdateUserSchema = updateProfileScema.extend({
-  email: z.string().email({ message: "Invalid email address!" }),
+  email: emailValidation,
   username: z.string().min(5),
 
   avatarId: z.string().optional(),

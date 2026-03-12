@@ -7,6 +7,7 @@ export interface IVerificationType {
   _id?: string;
   userId: ObjectId | string;
   verificationType: Verification;
+  email?: string;
   verificationCode: string;
   expiresAt: Date;
   attempts: number;

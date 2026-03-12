@@ -87,7 +87,7 @@ const VarificationPage = () => {
       const res = await fetch("/api/auth/verification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, otp }),
+        body: JSON.stringify({ userId, email, otp }),
       });
 
       const data = await res.json();
