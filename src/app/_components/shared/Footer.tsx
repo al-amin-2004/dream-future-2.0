@@ -4,7 +4,7 @@ import { Facebook, Twitter, Youtube } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-white">
+    <footer className="bg-primary/80">
       <section className="max-w-11/12 mx-auto p-4 md:p-10 bg-background rounded-b-3xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-8">
         <div className="space-y-4 md:space-y-5 sm:col-span-2 md:col-span-3 xl:col-span-2">
           <Logo /> 

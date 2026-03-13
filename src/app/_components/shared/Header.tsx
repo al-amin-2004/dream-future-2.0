@@ -15,7 +15,7 @@ const Navlist: INavlist[] = [
   { link: "leaderboard", label: "Leaderboard" },
   { link: "gallery", label: "Gallery" },
   { link: "about", label: "About us" },
-  { link: "contact", label: "Contact us" },
+  { link: "#contact-section", label: "Contact us" },
 ];
 
 const Header: FC = () => {

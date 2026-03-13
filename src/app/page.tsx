@@ -1,3 +1,4 @@
+import ContactPage from "./(routes)/contact/page";
 import FinotiveFunding from "./_components/sections/FinotiveFunding";
 import Hero from "./_components/sections/Hero";
 import Services from "./_components/sections/Services";
@@ -17,6 +18,7 @@ export default function Home() {
       <Hero/>
       <FinotiveFunding />
       <Services/>
+      <ContactPage/>
       <Footer/>
     </>
   );
