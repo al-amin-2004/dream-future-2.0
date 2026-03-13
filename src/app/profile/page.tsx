@@ -207,7 +207,7 @@ const Profile = () => {
       </motion.div>
 
       {/* Request form */}
-      <RequestForm />
+      {accounts.length !== 0 && <RequestForm />}
     </motion.div>
   );
 };
